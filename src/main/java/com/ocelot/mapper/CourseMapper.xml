@@ -66,7 +66,7 @@
     </select>
 
     <!-- 新增信息 -->
-    <insert id="addClasstable">
+    <insert id="addCourseTable" parameterType="map">
         INSERT INTO classtable (
             courseName, courseTeacher, courseLocation, courseWeekDay, courseClass, courseWeek, courseSchoolYear,
             studentId

@@ -1,10 +1,9 @@
-package com.ocelot.controller;
+package com.ocelot.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ocelot.model.Course;
-import com.ocelot.util.HttpPoolUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -28,7 +27,9 @@ public class SystemHandler {
     //tips:System特指教务系统
     private static final Logger logger = LoggerFactory.getLogger(SystemHandler.class);
 
-    public static String studentLogin(String account, String password) throws IOException {
+    public static JSONObject studentLogin(String account, String password) throws IOException {
+        JSONObject jsonResponse = new JSONObject();
+        JSONObject data = new JSONObject();
         //给密码做Base64加密
         String passwordBase64 = Base64.getEncoder().encodeToString(password.getBytes(StandardCharsets.UTF_8));
 
@@ -61,25 +62,32 @@ public class SystemHandler {
                 String msg = jsonObject.getString("msg");
 
                 if (Objects.equals(status, "y")) {
-                    return status;
+                    jsonResponse.put("msg","成功登陆");
+                    jsonResponse.put("code", "True");
+                    return jsonResponse;
                 } else if (Objects.equals(status, "n")) {
-                    String message = "账号: " + account + " " + msg;
-                    logger.error(message);
-                    return msg;
+                    jsonResponse.put("data", data);
+                    jsonResponse.put("code", "False");
+                    logger.error(jsonResponse.toJSONString());
+                    return jsonResponse;
                 } else {
-                    logger.error("参数传递失败");
-                    return "参数传递失败";
+                    jsonResponse.put("error","请求登陆失败!");
+                    jsonResponse.put("code", "False");
+                    logger.error(jsonResponse.toJSONString());
+                    return jsonResponse;
                 }
             } finally {
 //                HttpPoolUtil.closePool();
             }
         } else {
-            return "访问失败,请确认教务系统能否正常访问";
+            jsonResponse.put("error","访问失败,请确认教务系统能否正常访问");
+            jsonResponse.put("code: ", "False");
+            return jsonResponse;
         }
     }
 
     //从教务系统获取课表
-    public static JSONArray takeClassTable(int schoolYear, String studentId) throws IOException {
+    public static JSONArray takeClassTable(int schoolYear) throws IOException {
         Course course;
         JSONArray classArray = new JSONArray();
         JSONArray formattedClassArray = new JSONArray();

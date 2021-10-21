@@ -13,7 +13,7 @@ public interface CourseMapper {
     //查询课表
     List<Course> selectCourseTable(Map<String, String> map);
     //新增课表
-    void addCourseTable(Map<String, String> map);
+    int addCourseTable(Map<String, String> map);
     //删除指定用户的课表
     void deleteCourseTable(String studentId);
 }

@@ -20,7 +20,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -106,12 +106,52 @@ public class RedisConfig {
         template.setKeySerializer(stringRedisSerializer);
         // hash的key也采用String的序列化方式
         template.setHashKeySerializer(stringRedisSerializer);
-        // value序列化方式采用jackson
-        template.setValueSerializer(fastJson2JsonRedisSerializer);
-        // hash的value序列化方式采用jackson
+        // value序列化方式采用fastjson
+        template.setValueSerializer(stringRedisSerializer);
+        // hash的value序列化方式采用fastjson
         template.setHashValueSerializer(fastJson2JsonRedisSerializer);
         template.afterPropertiesSet();
         return template;
+    }
+
+    /**
+     * 对hash类型的数据操作
+     */
+    @Bean
+    public HashOperations<String,String,Object> hashOperations(RedisTemplate<String,Object> redisTemplate){
+        return redisTemplate.opsForHash();
+    }
+
+    /**
+     * 对redis字符串类型数据库操作
+     */
+    @Bean
+    public ValueOperations<String, Object> valueOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForValue();
+    }
+
+    /**
+     * 对链表类型的数据操作
+     */
+    @Bean
+    public ListOperations<String, Object> listOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForList();
+    }
+
+    /**
+     * 对无序集合Set操作
+     */
+    @Bean
+    public SetOperations<String, Object> setOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForSet();
+    }
+
+    /**
+     * 对有序集合
+     */
+    @Bean
+    public ZSetOperations<String, Object> zSetOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForZSet();
     }
 
     @Bean("redisCacheManager")
