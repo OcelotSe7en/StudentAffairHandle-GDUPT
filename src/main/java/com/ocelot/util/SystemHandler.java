@@ -24,9 +24,16 @@ import java.util.List;
 import java.util.Objects;
 
 public class SystemHandler {
-    //tips:System特指教务系统
+    /*ForYourInformation
+    * System特指教务系统
+    * 所有与教务系统有关的API都在这里*/
     private static final Logger logger = LoggerFactory.getLogger(SystemHandler.class);
 
+    /**
+     * 学生登陆教务系统
+     * @param account 学号
+     * @param password 密码
+     */
     public static JSONObject studentLogin(String account, String password) throws IOException {
         JSONObject jsonResponse = new JSONObject();
         JSONObject data = new JSONObject();

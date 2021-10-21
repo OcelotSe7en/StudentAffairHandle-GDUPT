@@ -19,7 +19,7 @@ public class ClassTableController {
     @Autowired
     CourseService courseService;
 
-    @RequestMapping(value = "/classtable", method = RequestMethod.GET)
+    @RequestMapping(value = "/classtable", method = RequestMethod.POST)
     public JSONArray getClassTables(String studentId, String schoolYear, String password) throws IOException {
         JSONArray courseArray = new JSONArray();
         List<Course> courseList = courseService.selectCourseTable(studentId, schoolYear);
