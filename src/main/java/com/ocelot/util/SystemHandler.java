@@ -10,6 +10,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.ClientPNames;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -17,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -94,7 +97,7 @@ public class SystemHandler {
     }
 
     //从教务系统获取课表
-    public static JSONArray takeClassTable(int schoolYear) throws IOException {
+    public static JSONArray takeClassTable(int schoolYear) throws IOException{
         Course course;
         JSONArray classArray = new JSONArray();
         JSONArray formattedClassArray = new JSONArray();
@@ -103,9 +106,12 @@ public class SystemHandler {
 
         HttpGet httpGet = new HttpGet("https://jwxt.gdupt.edu.cn/xsgrkbcx!getKbRq.action?xnxqdm=" + schoolYear);
 
-        CloseableHttpResponse response = httpClient.execute(httpGet);
+        CloseableHttpResponse response = httpClient
+                .execute(httpGet);
 
-        if (response.getStatusLine().getStatusCode() == 200) {
+        int code = response.getStatusLine().getStatusCode();
+
+        if (code == 200) {
             //获取响应头的实例
             HttpEntity entity = response.getEntity();
             //将实例转换为字符串

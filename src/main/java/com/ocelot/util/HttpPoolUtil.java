@@ -49,10 +49,12 @@ public class HttpPoolUtil {
         //configBuilder.setStaleConnectionCheckEnabled(true);
         idleConnectionMonitorThread = new IdleConnectionMonitorThread(poolConnManager);
         idleConnectionMonitorThread.start();
-        requestConfig = configBuilder.build();
+        requestConfig = configBuilder
+                .build();
         httpClientBuilder = HttpClients.custom()
                 // TODO 设置后就可以关闭 httpClient 对象
                 .setConnectionManagerShared(true)
+                .disableRedirectHandling()
                 .setConnectionManager(poolConnManager)
                 .setDefaultRequestConfig(requestConfig)
                 .setProxy(proxy)
@@ -66,7 +68,9 @@ public class HttpPoolUtil {
      * @return httpClient
      */
     public static CloseableHttpClient getHttpClient() {
-        CloseableHttpClient httpClient = httpClientBuilder.build();
+        CloseableHttpClient httpClient = httpClientBuilder
+                .disableRedirectHandling()
+                .build();
         return httpClient;
     }
 
