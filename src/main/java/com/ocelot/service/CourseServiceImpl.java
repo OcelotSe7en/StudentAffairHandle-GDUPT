@@ -56,8 +56,8 @@ public class CourseServiceImpl implements CourseService {
         String courseName, courseTeacher, courseLocation, courseWeekDay, courseClass, courseWeek, courseSchoolYear;
         String courseStr = courseArray.toJSONString();
         String key = studentId+"_Course";
-
-        ValueOperations<String, String> operations = redisTemplate.opsForValue();
+        long studentIdLong = Long.parseLong(studentId);
+        ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
         for(int i = 0; i < courseArray.size(); i++){
             courseName = courseArray.getJSONObject(i).getString("courseName");
             courseTeacher = courseArray.getJSONObject(i).getString("courseTeacher");
@@ -66,7 +66,7 @@ public class CourseServiceImpl implements CourseService {
             courseWeek = courseArray.getJSONObject(i).getString("courseWeek");
             courseClass = courseArray.getJSONObject(i).getString("courseClass");
             courseSchoolYear = courseArray.getJSONObject(i).getString("courseSchoolYear");
-            Map<String, String> insertMap = new HashMap<>();
+            Map<Object, Object> insertMap = new HashMap<>();
             insertMap.put("courseName", courseName);
             insertMap.put("courseTeacher", courseTeacher);
             insertMap.put("courseLocation", courseLocation);
@@ -74,7 +74,7 @@ public class CourseServiceImpl implements CourseService {
             insertMap.put("courseWeek", courseWeek);
             insertMap.put("courseClass", courseClass);
             insertMap.put("courseSchoolYear", courseSchoolYear);
-            insertMap.put("studentId", studentId);
+            insertMap.put("studentId", studentIdLong);
             int insertResult = courseMapper.addCourseTable(insertMap);
             System.out.println("已插入数据: "+insertResult);
         }

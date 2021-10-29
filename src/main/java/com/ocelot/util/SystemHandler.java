@@ -153,10 +153,10 @@ public class SystemHandler {
         JSONArray returnArray = new JSONArray();//返回的JSON数组
         if(loginFlag == 1){
             CloseableHttpClient httpClient = HttpPoolUtil.getHttpClient();
-            HttpGet httpGet = new HttpGet("https://jwxt.gdupt.edu.cn/xsktsbxx!getYxktDataList.action?" +
+            HttpGet getActivities = new HttpGet("https://jwxt.gdupt.edu.cn/xsktsbxx!getYxktDataList.action?" +
                     "xnxqdm=&page=1&rows=60&sort=cjsj&order=desc");
             CloseableHttpResponse response = httpClient
-                    .execute(httpGet);
+                    .execute(getActivities);
             //获取响应头的实例
             HttpEntity entity = response.getEntity();
             //将实例转换为字符串

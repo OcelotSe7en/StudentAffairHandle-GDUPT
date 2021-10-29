@@ -23,9 +23,9 @@ public class Course {
     public String courseWeek;
     //学年学期(xnxq)
     @JSONField(alternateNames = "xnxqdm")
-    public String courseSchoolYear;
+    public String courseSchoolYearTerm;
     //学生id
-    public String studentId;
+    public long studentId;
 
     public String getCourseName() {
         return courseName;
@@ -76,10 +76,10 @@ public class Course {
     }
 
     public String getCourseSchoolYear() {
-        return courseSchoolYear;
+        return courseSchoolYearTerm;
     }
 
     public void setCourseSchoolYear(String courseSchoolYear) {
-        this.courseSchoolYear = courseSchoolYear;
+        this.courseSchoolYearTerm = courseSchoolYear;
     }
 }

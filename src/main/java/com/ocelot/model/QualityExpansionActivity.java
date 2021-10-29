@@ -2,6 +2,8 @@ package com.ocelot.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import java.sql.Date;
+
 /*TODO
 *  1.设计数据库
 *  2.完成素拓分的CRUD
@@ -13,25 +15,28 @@ public class QualityExpansionActivity {
     String activityName;
     //素拓活动的学年学期时间
     @JSONField(alternateNames = "xnxqdm")
-    String schoolYear;
+    String schoolYearTerm;
     //素拓活动开展时间
     @JSONField(alternateNames = "kzsj")
-    String activityTime;
+    Date activityTime;
     //素拓分
     @JSONField(alternateNames = "hdxf")
-    String activityScore;
+    float activityScore;
     //素拓分认定状态
     @JSONField(alternateNames = "xsrdzt")
     String activitySensorStatus;
     //素拓审核时间
     @JSONField(alternateNames = "shrq")
-    String activitySensorTime;
+    Date activitySensorTime;
+
+    //学号
+    long studentId;
 
     @Override
     public String toString() {
         return "QualityExpansionActivity{" +
                 "activityName='" + activityName + '\'' +
-                ", schoolYear='" + schoolYear + '\'' +
+                ", schoolYear='" + schoolYearTerm + '\'' +
                 ", activityTime='" + activityTime + '\'' +
                 ", activityScore='" + activityScore + '\'' +
                 ", activitySensorStatus='" + activitySensorStatus + '\'' +
@@ -47,27 +52,27 @@ public class QualityExpansionActivity {
         this.activityName = activityName;
     }
 
-    public String getSchoolYear() {
-        return schoolYear;
+    public String getSchoolYearTerm() {
+        return schoolYearTerm;
     }
 
-    public void setSchoolYear(String schoolYear) {
-        this.schoolYear = schoolYear;
+    public void setSchoolYearTerm(String schoolYearTerm) {
+        this.schoolYearTerm = schoolYearTerm;
     }
 
-    public String getActivityTime() {
+    public Date getActivityTime() {
         return activityTime;
     }
 
-    public void setActivityTime(String activityTime) {
+    public void setActivityTime(Date activityTime) {
         this.activityTime = activityTime;
     }
 
-    public String getActivityScore() {
+    public float getActivityScore() {
         return activityScore;
     }
 
-    public void setActivityScore(String activityScore) {
+    public void setActivityScore(float activityScore) {
         this.activityScore = activityScore;
     }
 
@@ -79,11 +84,11 @@ public class QualityExpansionActivity {
         this.activitySensorStatus = activitySensorStatus;
     }
 
-    public String getActivitySensorTime() {
+    public Date getActivitySensorTime() {
         return activitySensorTime;
     }
 
-    public void setActivitySensorTime(String activitySensorTime) {
+    public void setActivitySensorTime(Date activitySensorTime) {
         this.activitySensorTime = activitySensorTime;
     }
 }
