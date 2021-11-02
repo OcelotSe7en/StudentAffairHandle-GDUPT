@@ -36,7 +36,7 @@ public class HttpPoolUtil {
         poolConnManager.setDefaultMaxPerRoute(maxTotalPool);
 
         //设置代理,方便Fiddler抓包
-        HttpHost proxy = new HttpHost("127.0.0.1", 10809, "http");
+//        HttpHost proxy = new HttpHost("127.0.0.1", 10809, "http");
 
         RequestConfig.Builder configBuilder = RequestConfig.custom();
         // 设置连接超时
@@ -57,7 +57,7 @@ public class HttpPoolUtil {
                 .disableRedirectHandling()
                 .setConnectionManager(poolConnManager)
                 .setDefaultRequestConfig(requestConfig)
-                .setProxy(proxy)
+//                .setProxy(proxy)
                 .setDefaultCookieStore(cookieStore);
         logger.info(">>>>>>>>>>> PoolingHttpClientConnectionManager初始化成功 >>>>>>>>>>>");
     }

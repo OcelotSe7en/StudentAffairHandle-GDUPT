@@ -27,7 +27,7 @@
     <select id="selectCourseTableByCondition" resultMap="courseMap" parameterType="map">
         SELECT
         <include refid="allColumns" />
-        FROM classtable c WHERE 1 = 1
+        FROM coursetable c WHERE 1 = 1
         <if test="courseName != null and courseName != ''">
             AND c.course_name LIKE CONCAT('%', #{courseName}, '%')
         </if>
@@ -57,7 +57,7 @@
     <select id="selectCourseTable" resultMap="courseMap" parameterType="map">
         SELECT
         <include refid="allColumns" />
-        FROM classtable c WHERE 1 = 1
+        FROM coursetable c WHERE 1 = 1
         <if test="studentId != null and studentId != ''">
             AND c.student_id LIKE CONCAT('%', #{studentId}, '%')
         </if>
@@ -68,7 +68,7 @@
 
     <!-- 新增信息 -->
     <insert id="addCourseTable" parameterType="map">
-        INSERT INTO classtable (
+        INSERT INTO coursetable (
             course_name, course_teacher, course_location, course_week_day, course_class, course_week, course_school_year_term,
             student_id
         ) VALUES (
@@ -82,10 +82,28 @@
                      #{studentId}
                  )
     </insert>
+    
+    <!-- 更新课表 -->
+    <update id="updateCourseTable" parameterType="map">
+        UPDATE coursetable
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="courseName != null">course_name = #{courseName},</if>
+            <if test="courseTeacher != null">course_teacher = #{courseTeacher},</if>
+            <if test="courseLocation != null">course_location = #{courseLocation},</if>
+            <if test="courseWeekDay != null">course_week_day = #{courseWeekDay},</if>
+            <if test="courseClass != null">course_class = #{courseClass},</if>
+            <if test="courseWeek != null">course_week = #{courseWeek},</if>
+        </trim>
+        WHERE student_id = #{studentId}
+            AND course_name = #{courseName}
+            AND course_school_year_term = #{courseSchoolYear}
+            AND course_week_day = #{courseWeekDay}
+            AND course_week = #{courseWeek}
+    </update>
 
     <!-- 批量新增信息 -->
     <insert id="addClasstables" parameterType="list">
-        INSERT INTO classtable (
+        INSERT INTO coursetable (
         course_name, course_teacher, course_location, course_week_day, course_class, course_week, course_school_year_term,
         student_id
         ) VALUES

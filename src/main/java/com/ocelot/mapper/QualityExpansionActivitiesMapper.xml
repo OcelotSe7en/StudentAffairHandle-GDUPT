@@ -49,7 +49,8 @@
     <!-- 新增信息 -->
     <insert id="addQEActivities">
         INSERT INTO quality_expansion_activities (
-            activity_name, activity_school_year_term, activity_time, activity_score, activity_sensor_status, activity_sensor_time, student_id
+            activity_name, activity_school_year_term, activity_time,
+            activity_score, activity_sensor_status, activity_sensor_time, student_id
         ) VALUES (
                      #{activityName},
                      #{activitySchoolYearTerm},
@@ -64,7 +65,8 @@
     <!-- 批量新增信息 -->
     <insert id="addMultipleQEActivities" parameterType="list">
         INSERT INTO quality_expansion_activities (
-        activity_name, activity_school_year_term, activity_time, activity_score, activity_sensor_status, activity_sensor_time, student_id
+        activity_name, activity_school_year_term, activity_time, activity_score,
+        activity_sensor_status, activity_sensor_time, student_id
         ) VALUES
         <foreach collection="list" index="index" item="item" separator=",">
             (

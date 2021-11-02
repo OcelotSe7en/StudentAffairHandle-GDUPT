@@ -14,6 +14,9 @@ public interface CourseMapper {
     List<Course> selectCourseTable(Map<String, String> map);
     //新增课表
     int addCourseTable(Map<Object, Object> map);
+    //更新课表
+    int updateCourseTable(Map<Object, Object> map);
     //删除指定用户的课表
     void deleteCourseTable(String studentId);
+
 }

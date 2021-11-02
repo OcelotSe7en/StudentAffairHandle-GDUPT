@@ -82,22 +82,36 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public void updateCourseTable(JSONArray systemCourseArray, String studentId, String schoolYear) {
+        String courseName, courseTeacher, courseLocation, courseWeekDay, courseClass, courseWeek, courseSchoolYear;
+        long studentIdLong = Long.parseLong(studentId);
+        if(!systemCourseArray.isEmpty()){
+            for(int i = 0; i < systemCourseArray.size(); i++){
+                courseName = systemCourseArray.getJSONObject(i).getString("courseName");
+                courseTeacher = systemCourseArray.getJSONObject(i).getString("courseTeacher");
+                courseLocation = systemCourseArray.getJSONObject(i).getString("courseLocation");
+                courseWeekDay = systemCourseArray.getJSONObject(i).getString("courseWeekDay");
+                courseWeek = systemCourseArray.getJSONObject(i).getString("courseWeek");
+                courseClass = systemCourseArray.getJSONObject(i).getString("courseClass");
+                courseSchoolYear = systemCourseArray.getJSONObject(i).getString("courseSchoolYear");
+                Map<Object, Object> updateMap = new HashMap<>();
+                updateMap.put("courseName", courseName);
+                updateMap.put("courseTeacher", courseTeacher);
+                updateMap.put("courseLocation", courseLocation);
+                updateMap.put("courseWeekDay", courseWeekDay);
+                updateMap.put("courseWeek", courseWeek);
+                updateMap.put("courseClass", courseClass);
+                updateMap.put("courseSchoolYear", courseSchoolYear);
+                updateMap.put("studentId", studentIdLong);
+                int result = courseMapper.updateCourseTable(updateMap);
+                System.out.println("已更新数据: "+result);
+            }
+        }
+    }
+
+    @Override
     public void deleteCourseTable(String studentId) {
 
-    }
-
-    @Override
-    public List<Course> selectCourseTableFromRedis(String studentId) {
-
-        return null;
-    }
-
-    @Override
-    public void addCourseTableToRedis(JSONArray courseArray, String studentId) {
-        String courseStr = courseArray.toJSONString();
-        String key = studentId+"_Course";
-        ValueOperations<String, String> operations = redisTemplate.opsForValue();
-        operations.set(key, courseStr);
     }
 
     @Override
