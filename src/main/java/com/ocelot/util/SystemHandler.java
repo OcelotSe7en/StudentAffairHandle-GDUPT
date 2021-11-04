@@ -77,6 +77,7 @@ public class SystemHandler {
                     loginFlag = 1;
                     jsonResponse.put("msg","成功登陆");
                     jsonResponse.put("code", true);
+                    logger.info("学号: "+account+" 登陆成功");
                     return jsonResponse;
                 } else if (Objects.equals(status, "n")) {
                     loginFlag = 0;
@@ -88,6 +89,7 @@ public class SystemHandler {
                     loginFlag = 0;
                     jsonResponse.put("error","请求登陆失败!");
                     jsonResponse.put("code", false);
+                    logger.info("学号: "+account+" 登陆失败");
                     logger.error(jsonResponse.toJSONString());
                     return jsonResponse;
                 }

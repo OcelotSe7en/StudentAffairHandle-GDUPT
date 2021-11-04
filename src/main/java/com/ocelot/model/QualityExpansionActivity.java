@@ -2,12 +2,8 @@ package com.ocelot.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-import java.sql.Date;
+import java.util.Date;
 
-/*TODO
-*  1.设计数据库
-*  2.完成素拓分的CRUD
-* */
 //素拓的Model, 暂未找到素拓分的信达雅翻译, 只能直球翻译
 public class QualityExpansionActivity {
     //素拓活动名称
@@ -18,7 +14,7 @@ public class QualityExpansionActivity {
     String schoolYearTerm;
     //素拓活动开展时间
     @JSONField(alternateNames = "kzsj")
-    Date activityTime;
+    String activityTime;
     //素拓分
     @JSONField(alternateNames = "hdxf")
     float activityScore;
@@ -27,7 +23,7 @@ public class QualityExpansionActivity {
     String activitySensorStatus;
     //素拓审核时间
     @JSONField(alternateNames = "shrq")
-    Date activitySensorTime;
+    String activitySensorTime;
 
     //学号
     long studentId;
@@ -60,11 +56,11 @@ public class QualityExpansionActivity {
         this.schoolYearTerm = schoolYearTerm;
     }
 
-    public Date getActivityTime() {
+    public String getActivityTime() {
         return activityTime;
     }
 
-    public void setActivityTime(Date activityTime) {
+    public void setActivityTime(String activityTime) {
         this.activityTime = activityTime;
     }
 
@@ -84,11 +80,11 @@ public class QualityExpansionActivity {
         this.activitySensorStatus = activitySensorStatus;
     }
 
-    public Date getActivitySensorTime() {
+    public String getActivitySensorTime() {
         return activitySensorTime;
     }
 
-    public void setActivitySensorTime(Date activitySensorTime) {
+    public void setActivitySensorTime(String activitySensorTime) {
         this.activitySensorTime = activitySensorTime;
     }
 }

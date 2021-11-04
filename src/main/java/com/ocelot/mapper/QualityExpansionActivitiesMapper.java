@@ -13,7 +13,7 @@ import java.util.Map;
 public interface QualityExpansionActivitiesMapper {
     //QualityExpansion 缩写为QE
     //查询素拓活动
-    List<QualityExpansionActivity> selectQEActivitiesByStudentId(long studentId);
+    List<QualityExpansionActivity> selectQEActivitiesByStudentId(Map<Object,Object> map);
     //新增课表
     int addQEActivities(Map<Object, Object> map);
     //删除指定用户的课表
