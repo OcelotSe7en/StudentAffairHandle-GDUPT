@@ -102,7 +102,7 @@
     </update>
 
     <!-- 批量新增信息 -->
-    <insert id="addClasstables" parameterType="list">
+    <insert id="addMultipleCourseTables" parameterType="list">
         INSERT INTO coursetable (
         course_name, course_teacher, course_location, course_week_day, course_class, course_week, course_school_year_term,
         student_id
@@ -120,5 +120,10 @@
             )
         </foreach>
     </insert>
+
+    <!-- 删除信息 -->
+    <delete id="deleteCourseTablesByCondition" parameterType="map">
+        DELETE FROM coursetable WHERE student_id = #{studentId}
+    </delete>
 
 </mapper>

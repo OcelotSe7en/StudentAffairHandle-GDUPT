@@ -17,7 +17,5 @@ public interface CourseService {
     //Mysql删除指定用户的课表
     public void deleteCourseTable(String studentId);
 
-    //Redis删除课表
-    public void deleteCourseTableInRedis(String studentId);
 }
 

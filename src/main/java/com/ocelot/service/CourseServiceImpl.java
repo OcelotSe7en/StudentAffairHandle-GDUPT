@@ -125,9 +125,4 @@ public class CourseServiceImpl implements CourseService {
     public void deleteCourseTable(String studentId) {
 
     }
-
-    @Override
-    public void deleteCourseTableInRedis(String studentId) {
-
-    }
 }
