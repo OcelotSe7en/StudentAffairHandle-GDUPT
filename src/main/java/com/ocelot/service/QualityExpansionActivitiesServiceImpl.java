@@ -55,6 +55,7 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
         String activityName, activitySchoolYearTerm, activitySensorStatus;
         float activityScore;
         Date activityTime, activitySensorTime;
+        long activityId;
         long studentIdLong = Long.parseLong(studentId);
 
         String key = studentId+"_QEActivities";
@@ -62,6 +63,7 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
         ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
 
         for(int i = 0; i < qeaArray.size(); i++){
+            activityId = qeaArray.getJSONObject(i).getLong("activityId");
             activityName = qeaArray.getJSONObject(i).getString("activityName");
             activitySchoolYearTerm = qeaArray.getJSONObject(i).getString("schoolYearTerm");
             activityTime = qeaArray.getJSONObject(i).getSqlDate("activityTime");
@@ -69,6 +71,7 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
             activitySensorStatus = qeaArray.getJSONObject(i).getString("activitySensorStatus");
             activitySensorTime = qeaArray.getJSONObject(i).getSqlDate("activitySensorTime");
             Map<Object, Object> insertMap = new HashMap<>();
+            insertMap.put("activityId", activityId);
             insertMap.put("activityName", activityName);
             insertMap.put("activitySchoolYearTerm", activitySchoolYearTerm);
             insertMap.put("activityTime", activityTime);
@@ -82,5 +85,51 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
         operations.set(key, qeaStr);
         logger.info("用户: "+studentId+" 已新增 "+insertResult+" 条素拓活动信息");
         return insertResult;
+    }
+
+    @Override
+    public int updateQualityExpansionActivity(JSONArray qeaArray, String studentId) {
+        int updateResult = 0;
+        String activitySensorStatus;
+        Date activitySensorTime;
+        float activityScore;
+        long activityId;
+
+        if(!qeaArray.isEmpty() && studentId!=null && !studentId.equals("")){
+            Long studentIdLong = Long.parseLong(studentId);
+            for(int i=0; i < qeaArray.size(); i++){
+                activityId = qeaArray.getJSONObject(i).getLong("activityId");
+                activityScore = qeaArray.getJSONObject(i).getFloat("activityScore");
+                activitySensorStatus = qeaArray.getJSONObject(i).getString("activitySensorStatus");
+                activitySensorTime = qeaArray.getJSONObject(i).getSqlDate("activitySensorTime");
+                Map<Object, Object> updateMap = new HashMap<>();
+                updateMap.put("activityId", activityId);
+                updateMap.put("activityScore", activityScore);
+                updateMap.put("activitySensorStatus", activitySensorStatus);
+                updateMap.put("activitySensorTime", activitySensorTime);
+                updateMap.put("studentId", studentIdLong);
+                updateResult += qualityExpansionActivitiesMapper.updateQEActivity(updateMap);
+                logger.debug("正在插入 "+ updateMap);
+            }
+            logger.info("用户: "+studentId+" 已更新 "+updateResult+" 条素拓活动信息");
+            return updateResult;
+        }
+        return 0;
+    }
+
+    @Override
+    public int deleteQualityExpansionActivityById(String studentId) {
+        int deleteResult = 0;
+
+        if(studentId!=null && !studentId.equals("")){
+            Long studentIdLong = Long.parseLong(studentId);
+            redisTemplate.delete(studentId);
+            deleteResult +=  qualityExpansionActivitiesMapper.deleteQEActivitiesByStudentId(studentIdLong);
+            logger.info("已删除用户: "+studentId+"的"+deleteResult+"条素拓活动信息");
+            return deleteResult;
+        }else{
+            logger.error("学号不能为空");
+            return 0;
+        }
     }
 }

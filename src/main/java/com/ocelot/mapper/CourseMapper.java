@@ -17,6 +17,6 @@ public interface CourseMapper {
     //更新课表
     int updateCourseTable(Map<Object, Object> map);
     //删除指定用户的课表
-    void deleteCourseTable(String studentId);
+    int deleteCourseTable(Long studentId);
 
 }

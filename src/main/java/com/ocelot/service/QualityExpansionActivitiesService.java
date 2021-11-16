@@ -8,11 +8,11 @@ import java.util.Map;
 
 public interface QualityExpansionActivitiesService {
     //查询素拓活动
-    public List<QualityExpansionActivity> selectQualityExpansionActivity(String studentId);
+    List<QualityExpansionActivity> selectQualityExpansionActivity(String studentId);
     //新增素拓活动
-    public int addQualityExpansionActivity(JSONArray qeaArray, String studentId);
+    int addQualityExpansionActivity(JSONArray qeaArray, String studentId);
     //更新素拓活动
-
+    int updateQualityExpansionActivity(JSONArray qeaArray, String studentId);
     //删除素拓活动
-
+    int deleteQualityExpansionActivityById(String studentId);
 }

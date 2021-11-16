@@ -150,7 +150,7 @@ public class SystemHandler {
     *  测试获取流程
     * */
     public static JSONArray takeQualityExpansionActivities() throws IOException{
-        QualityExpansionActivity activity;
+        QualityExpansionActivity activity = new QualityExpansionActivity();
         JSONObject statusCode = new JSONObject();//标识成功/失败
         JSONArray returnArray = new JSONArray();//返回的JSON数组
         if(loginFlag == 1){

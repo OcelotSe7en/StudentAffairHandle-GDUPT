@@ -122,7 +122,17 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void deleteCourseTable(String studentId) {
-
+    public int deleteCourseTable(String studentId) {
+        int deleteResult = 0;
+        if(studentId != null){
+            Long studentIdLong = Long.parseLong(studentId);
+            redisTemplate.delete(studentId);
+            deleteResult = courseMapper.deleteCourseTable(studentIdLong);
+            logger.info("已删除用户: "+studentId+"的"+deleteResult+"条课表信息");
+            return deleteResult;
+        }else{
+            logger.error("学号不能为空");
+            return 0;
+        }
     }
 }

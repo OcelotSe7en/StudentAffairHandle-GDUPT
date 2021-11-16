@@ -14,8 +14,10 @@ public interface QualityExpansionActivitiesMapper {
     //QualityExpansion 缩写为QE
     //查询素拓活动
     List<QualityExpansionActivity> selectQEActivitiesByStudentId(Map<Object,Object> map);
-    //新增课表
+    //新增素拓活动
     int addQEActivities(Map<Object, Object> map);
-    //删除指定用户的课表
-    void deleteCourseTable(String studentId);
+    //更新素拓活动
+    int updateQEActivity(Map<Object, Object> map);
+    //删除指定用户的素拓活动
+    int deleteQEActivitiesByStudentId(Long studentId);
 }

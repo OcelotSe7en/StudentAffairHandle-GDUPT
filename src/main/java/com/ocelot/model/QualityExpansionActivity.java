@@ -6,6 +6,9 @@ import java.util.Date;
 
 //素拓的Model, 暂未找到素拓分的信达雅翻译, 只能直球翻译
 public class QualityExpansionActivity {
+    //素拓活动编号
+    @JSONField(alternateNames = "ktbh")
+    String activityId;
     //素拓活动名称
     @JSONField(alternateNames = "ktmc")
     String activityName;
@@ -28,16 +31,14 @@ public class QualityExpansionActivity {
     //学号
     long studentId;
 
-    @Override
-    public String toString() {
-        return "QualityExpansionActivity{" +
-                "activityName='" + activityName + '\'' +
-                ", schoolYear='" + schoolYearTerm + '\'' +
-                ", activityTime='" + activityTime + '\'' +
-                ", activityScore='" + activityScore + '\'' +
-                ", activitySensorStatus='" + activitySensorStatus + '\'' +
-                ", activitySensorTime='" + activitySensorTime + '\'' +
-                '}';
+
+
+    public String getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
     }
 
     public String getActivityName() {
@@ -86,5 +87,13 @@ public class QualityExpansionActivity {
 
     public void setActivitySensorTime(String activitySensorTime) {
         this.activitySensorTime = activitySensorTime;
+    }
+
+    public long getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(long studentId) {
+        this.studentId = studentId;
     }
 }
