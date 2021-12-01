@@ -1,5 +1,5 @@
 syntax = "proto3";
-//第一版,勿用
+//第二次更新
 message CourseTableRequest{
   //学号
   string student_id = 1;
@@ -8,22 +8,24 @@ message CourseTableRequest{
   //密码
   string student_password = 3;
 }
-
 message CourseTableResponse{
-  //课程名
-  repeated string course_name = 1;
-  //任课老师
-  repeated string course_teacher = 2;
-//  上课地点
-  repeated string course_location = 3;
-//  星期x
-  repeated string course_week_day = 4;
-//  节次
-  repeated string course_class = 5;
-//  周次
-  repeated string course_week = 6;
-//  学年学期(例:202101)
-  repeated string course_school_year_term = 7;
-//  学号
-  repeated string student_id = 8;
+  message CourseItem{
+    //课程名
+    string course_name = 1;
+    //任课老师
+    string course_teacher = 2;
+    //  上课地点
+    string course_location = 3;
+    //  星期x
+    string course_week_day = 4;
+    //  节次
+    string course_class = 5;
+    //  周次
+    string course_week = 6;
+    //  学年学期(例:202101)
+    string course_school_year_term = 7;
+    //  学号
+    string student_id = 8;
+  }
+  repeated  CourseItem items = 1;
 }
