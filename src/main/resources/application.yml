@@ -1,4 +1,12 @@
 spring:
+  application:
+    name: gdupt-producer
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        serviceName: gdupt-producer
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/minicampus?useSSL=false&characterEnding=utf8
@@ -26,8 +34,6 @@ spring:
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
-
-
 
   redis:
     #基本配置
