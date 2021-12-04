@@ -3,13 +3,15 @@ spring:
     name: gdupt-producer
   cloud:
     consul:
-      host: localhost
+      host: host.docker.internal
       port: 8500
       discovery:
         serviceName: gdupt-producer
+        heartbeat:
+          enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/minicampus?useSSL=false&characterEnding=utf8
+    url: jdbc:mysql://localhost:3306/minicampus?useSSL=false
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
     password: root
