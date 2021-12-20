@@ -122,8 +122,11 @@
     </insert>
 
     <!-- 删除信息 -->
-    <delete id="deleteCourseTablesByCondition" parameterType="map">
-        DELETE FROM coursetable WHERE student_id = #{studentId}
+    <delete id="deleteCourseTable" >
+        DELETE FROM coursetable WHERE student_id in
+        <foreach item="studentId" collection="list" open="(" separator="," close=")">
+            #{studentId}
+        </foreach>
     </delete>
 
 </mapper>

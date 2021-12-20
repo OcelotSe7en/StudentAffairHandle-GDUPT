@@ -1,0 +1,742 @@
+[
+  {
+    "courseClass": "0102",
+    "courseLocation": "二教B-901",
+    "courseName": "大学生就业指导",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "刘金婵",
+    "courseWeek": "6",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0102",
+    "courseLocation": "二教B-901",
+    "courseName": "大学生就业指导",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "李海健",
+    "courseWeek": "7",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教B-801",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "1",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教B-801",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "2",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教B-801",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "3",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教B-801",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "4",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教B-801",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "6",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教B-801",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "8",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0708",
+    "courseLocation": "二教B-801",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "1",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-801",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "1",
+    "courseWeekDay": "3"
+  },
+  {
+    "courseClass": "0708",
+    "courseLocation": "二教B-801",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "2",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-801",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "2",
+    "courseWeekDay": "3"
+  },
+  {
+    "courseClass": "0708",
+    "courseLocation": "二教B-801",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "3",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-801",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "3",
+    "courseWeekDay": "3"
+  },
+  {
+    "courseClass": "0708",
+    "courseLocation": "二教B-801",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "4",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-801",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "4",
+    "courseWeekDay": "3"
+  },
+  {
+    "courseClass": "0708",
+    "courseLocation": "二教B-801",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "5",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-801",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "5",
+    "courseWeekDay": "3"
+  },
+  {
+    "courseClass": "0708",
+    "courseLocation": "二教B-801",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "6",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-801",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "6",
+    "courseWeekDay": "3"
+  },
+  {
+    "courseClass": "0910",
+    "courseLocation": "二教A-203",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "3",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0708",
+    "courseLocation": "二教A-203",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "3",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0910",
+    "courseLocation": "二教A-203",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "4",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0708",
+    "courseLocation": "二教A-203",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "4",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0910",
+    "courseLocation": "二教A-203",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "5",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0708",
+    "courseLocation": "二教A-203",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "5",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0910",
+    "courseLocation": "二教A-203",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "6",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0708",
+    "courseLocation": "二教A-203",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "6",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0910",
+    "courseLocation": "二教A-203",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "7",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0708",
+    "courseLocation": "二教A-203",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "7",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0910",
+    "courseLocation": "二教A-203",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "8",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0708",
+    "courseLocation": "二教A-203",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "8",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教A-201",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "1",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教A-201",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "2",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教A-201",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "3",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教A-201",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "4",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教A-201",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "6",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教A-201",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "8",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-301",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "1",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-301",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "2",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-301",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "3",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-301",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "4",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-301",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "5",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-301",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "6",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教B-206",
+    "courseName": "形势与政策4",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "黎海燕",
+    "courseWeek": "7",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "二教B-206",
+    "courseName": "形势与政策4",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "黎海燕",
+    "courseWeek": "8",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "0102",
+    "courseLocation": "二教B-901",
+    "courseName": "大学生就业指导",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "李海健",
+    "courseWeek": "1",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0102",
+    "courseLocation": "二教B-901",
+    "courseName": "大学生就业指导",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "刘金婵",
+    "courseWeek": "2",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0102",
+    "courseLocation": "二教B-901",
+    "courseName": "大学生就业指导",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "李海健",
+    "courseWeek": "3",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0102",
+    "courseLocation": "二教B-901",
+    "courseName": "大学生就业指导",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "刘金婵",
+    "courseWeek": "4",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0102",
+    "courseLocation": "二教B-901",
+    "courseName": "大学生就业指导",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "李海健",
+    "courseWeek": "5",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-704",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "1",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-704",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "2",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-704",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "3",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-704",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "4",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-704",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "5",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "二教B-704",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "6",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "05060708",
+    "courseLocation": "物联网工程实验室",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "7",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "05060708",
+    "courseLocation": "物联网工程实验室",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "8",
+    "courseWeekDay": "5"
+  },
+  {
+    "courseClass": "05060708",
+    "courseLocation": "物联网工程实验室",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "8",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "05060708",
+    "courseLocation": "物联网工程实验室",
+    "courseName": "物联网技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "符秋丽",
+    "courseWeek": "7",
+    "courseWeekDay": "1"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "软件实验室",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "6",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "软件实验室",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "7",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "软件实验室",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "8",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "软件实验室",
+    "courseName": "区块链技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "王曦",
+    "courseWeek": "5",
+    "courseWeekDay": "2"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "软件实验室",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "2",
+    "courseWeekDay": "3"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "软件实验室",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "3",
+    "courseWeekDay": "3"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "软件实验室",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "4",
+    "courseWeekDay": "3"
+  },
+  {
+    "courseClass": "0304",
+    "courseLocation": "软件实验室",
+    "courseName": "数字图像处理",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "甄先通",
+    "courseWeek": "5",
+    "courseWeekDay": "3"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "硬件实验室",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "6",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "硬件实验室",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "7",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "硬件实验室",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "8",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0506",
+    "courseLocation": "硬件实验室",
+    "courseName": "大型数据库技术",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "吴良海",
+    "courseWeek": "5",
+    "courseWeekDay": "4"
+  },
+  {
+    "courseClass": "0102",
+    "courseLocation": "二教B-901",
+    "courseName": "大学生就业指导",
+    "courseSchoolYear": "202101",
+    "courseSchoolYearTerm": "202101",
+    "courseTeacher": "刘金婵",
+    "courseWeek": "8",
+    "courseWeekDay": "1"
+  }
+]

@@ -1,6 +1,7 @@
 package com.ocelot.service;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.ocelot.model.Course;
 
 import java.util.List;
@@ -12,8 +13,8 @@ public interface CourseService {
     //新增课表
     void addCourseTable(JSONArray courseArray, String studentId);
     //更新课表
-    void updateCourseTable(JSONArray systemCourseArray, String studentId, String schoolYear);
+    JSONObject updateCourseTable(JSONArray systemCourseArray, String studentId, String schoolYear);
     //删除指定用户的课表
-    int deleteCourseTable(String studentId);
+    JSONObject deleteCourseTable(List<Long> studentIdList);
 }
 

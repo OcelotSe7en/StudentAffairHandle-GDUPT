@@ -36,7 +36,6 @@ spring:
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
-
   redis:
     #基本配置
     database: 0
@@ -52,3 +51,8 @@ spring:
         min-idle: 25
         max-wait: -1
       shutdown-timeout: 100
+logging:
+  level:
+    com.ocelot.mapper : debug
+  file:
+    path: src/main/resources/logs

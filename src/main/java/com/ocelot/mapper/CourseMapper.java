@@ -16,7 +16,7 @@ public interface CourseMapper {
     int addCourseTable(Map<Object, Object> map);
     //更新课表
     int updateCourseTable(Map<Object, Object> map);
-    //删除指定用户的课表
-    int deleteCourseTable(Long studentId);
+    //批量删除课表
+    int deleteCourseTable(List<Long> studentId);
 
 }

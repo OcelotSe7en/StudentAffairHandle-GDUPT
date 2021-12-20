@@ -56,10 +56,11 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
         float activityScore;
         Date activityTime, activitySensorTime;
         long activityId;
+        JSONArray redisArray = new JSONArray();
         long studentIdLong = Long.parseLong(studentId);
 
         String key = studentId+"_QEActivities";
-        String qeaStr = qeaArray.toJSONString();//转换成字符串,方便存进redis
+
         ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
 
         for(int i = 0; i < qeaArray.size(); i++){
@@ -79,9 +80,14 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
             insertMap.put("activitySensorStatus", activitySensorStatus);
             insertMap.put("activitySensorTime", activitySensorTime);
             insertMap.put("studentId", studentIdLong);
+            //将插入的数据存入jsonArray,方便存入redis
+            redisArray.add(insertMap);
+
             insertResult += qualityExpansionActivitiesMapper.addQEActivities(insertMap);
             logger.debug("正在插入 "+ insertMap);
         }
+        String qeaStr = redisArray.toJSONString();//转换成字符串,方便存进redis
+        //将素拓活动存进redis
         operations.set(key, qeaStr);
         logger.info("用户: "+studentId+" 已新增 "+insertResult+" 条素拓活动信息");
         return insertResult;

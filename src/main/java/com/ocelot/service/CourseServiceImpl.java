@@ -2,6 +2,7 @@ package com.ocelot.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.ocelot.config.RedisConfig;
 import com.ocelot.mapper.CourseMapper;
 import com.ocelot.model.Course;
@@ -54,15 +55,20 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+    /**
+     * 向Redis/Mysql新增课表
+     * @param courseArray 从教务系统获取的课表,不允许为空
+     * @param studentId 学号,不允许为空
+     */
     @Override
     public void addCourseTable(JSONArray courseArray, String studentId) {
         //新增结果计数
         int insertResult = 0;
         String courseName, courseTeacher, courseLocation,
                 courseWeekDay, courseClass, courseWeek, courseSchoolYear;
-        long studentIdLong = Long.parseLong(studentId);
+        JSONArray redisArray = new JSONArray();
 
-        String courseStr = courseArray.toJSONString();
+        long studentIdLong = Long.parseLong(studentId);
         String key = studentId+"_Course";
         ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
 
@@ -83,19 +89,34 @@ public class CourseServiceImpl implements CourseService {
             insertMap.put("courseClass", courseClass);
             insertMap.put("courseSchoolYear", courseSchoolYear);
             insertMap.put("studentId", studentIdLong);
+
+            //将插入的数据存入jsonArray,方便存入redis
+            redisArray.add(insertMap);
+
             insertResult += courseMapper.addCourseTable(insertMap);
-            logger.debug("正在插入 "+insertMap);
+            logger.debug("正在插入 [{}]", insertMap);
         }
+        String courseStr = JSONArray.toJSONString(redisArray);
+        //将数据存入Redis
         operations.set(key, courseStr);
-        logger.info("用户: "+studentId+" 已新增 "+insertResult+" 课表信息");
+        logger.info("用户: [{}] 已新增 [{}] 课表信息", studentId, insertResult);
     }
 
+    /**
+     * 向Redis/MySql更新课表
+     * @param systemCourseArray 从教务系统获取的课表数组，用于更新
+     * @param studentId 学号,不允许为空
+     * @param schoolYear 学年学期,允许为空,格式为"年份+学期(01/02)",例如"202101"表示2021-2022学年第一学期
+     * @return responseObject 一个JSONObject，用于存放返回的信息
+     */
     @Override
-    public void updateCourseTable(JSONArray systemCourseArray, String studentId, String schoolYear) {
+    public JSONObject updateCourseTable(JSONArray systemCourseArray, String studentId, String schoolYear) {
+        JSONObject responseObject = new JSONObject();
         int updateResult = 0;
         String courseName, courseTeacher, courseLocation,
                 courseWeekDay, courseClass, courseWeek, courseSchoolYear;
         long studentIdLong = Long.parseLong(studentId);
+
         if(!systemCourseArray.isEmpty()){
             for(int i = 0; i < systemCourseArray.size(); i++){
                 courseName = systemCourseArray.getJSONObject(i).getString("courseName");
@@ -117,22 +138,40 @@ public class CourseServiceImpl implements CourseService {
                 updateResult += courseMapper.updateCourseTable(updateMap);
                 logger.debug("正在更新 "+updateMap);
             }
-            logger.info("用户: "+studentId+" 已更新 "+updateResult+" 条课程信息");
+            responseObject.put("msg","更新成功");
+            responseObject.put("code",true);
+            logger.info("用户: [{}] 已更新 [{}] 条课程信息",studentId , updateResult);
+        }else{
+            responseObject.put("msg","列表不能为空!");
+            responseObject.put("code", false);
         }
+        return responseObject;
     }
 
+    /**
+     * 向Redis/MySql更新课表
+     * @param studentIdList 学号列表，用于批量删除学号
+     * @return responseObject 一个JSONObject，用于存放返回的信息
+     */
     @Override
-    public int deleteCourseTable(String studentId) {
+    public JSONObject deleteCourseTable(List<Long> studentIdList) {
+        //删除结果计数
         int deleteResult = 0;
-        if(studentId != null){
-            Long studentIdLong = Long.parseLong(studentId);
-            redisTemplate.delete(studentId);
-            deleteResult = courseMapper.deleteCourseTable(studentIdLong);
-            logger.info("已删除用户: "+studentId+"的"+deleteResult+"条课表信息");
-            return deleteResult;
-        }else{
-            logger.error("学号不能为空");
-            return 0;
+        JSONObject responseObject = new JSONObject();
+
+        if(!studentIdList.isEmpty()){
+            for(int i=0; i<studentIdList.size(); i++){
+                redisTemplate.delete(studentIdList.get(i)+"_Course");
+            }
+            deleteResult = courseMapper.deleteCourseTable(studentIdList);
+            responseObject.put("result", deleteResult);
+            responseObject.put("code", true);
+          logger.info("已批量删除: [{}] 的记录, 共删除: [{}] 条", studentIdList, deleteResult);
+        }else {
+            responseObject.put("msg", "学号列表不能为空");
+            responseObject.put("code", false);
+            logger.warn("学号List不能为空");
         }
+        return responseObject;
     }
 }
