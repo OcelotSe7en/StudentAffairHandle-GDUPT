@@ -97,7 +97,10 @@
     </update>
 
     <delete id="deleteQEActivitiesByStudentId" parameterType="long">
-        DELETE FROM quality_expansion_activities WHERE student_id = #{studentId}
+        DELETE FROM quality_expansion_activities WHERE student_id in
+        <foreach item="studentId" collection="list" open="(" separator="," close=")">
+            #{studentId}
+        </foreach>
     </delete>
 
 </mapper>

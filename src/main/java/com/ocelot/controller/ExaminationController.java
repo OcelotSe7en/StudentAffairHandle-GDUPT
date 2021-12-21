@@ -3,8 +3,8 @@ package com.ocelot.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ocelot.model.Course;
-import com.ocelot.service.CourseService;
+import com.ocelot.model.Examination;
+import com.ocelot.service.ExaminationService;
 import com.ocelot.util.SystemHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,37 +15,37 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*成绩Controller*/
 @RestController//RestController返回JSON, Controller返回页面
 @RequestMapping("/api")
-public class CourseTableController {
+public class ExaminationController {
     private static final Logger logger = LoggerFactory.getLogger(SystemHandler.class);
     @Autowired
-    CourseService courseService;
+    ExaminationService examinationService;
 
-//  查询课表
-    @RequestMapping(value = "/classtable", method = RequestMethod.POST)
-    public JSONObject getClassTable(String studentId, String studentPassword, String schoolYear) throws IOException {
+    //    查询成绩
+    @RequestMapping(value = "/examination", method = RequestMethod.POST)
+    public JSONObject getExamination(String studentId, String studentPassword, String schoolYear) throws IOException {
         //从studentLogin返回的JSON对象
         JSONObject loginObject;
         //初始化函数返回的JSON对象
         JSONObject responseObject = new JSONObject();
         //定义课表数组
-        JSONArray courseArray;
+        JSONArray examinationArray;
         //从教务系统获取的课表
-        JSONArray classArrayFromSystem;
+        JSONArray examinationArrayFromSystem;
 
         //从数据库/Redis获取课表
-        List<Course> courseList = courseService.selectCourseTable(studentId, schoolYear);
+        List<Examination> examinationList = examinationService.selectExamination(studentId, schoolYear);
 
         /*判断有无课表,有则带状态码返回课表,无则进入系统获取*/
-        if (!courseList.isEmpty()) {//判空
-            String courseStr = JSON.toJSONString(courseList);
-            courseArray = JSONArray.parseArray(courseStr);
-            responseObject.put("data", courseArray);
+        if (!examinationList.isEmpty()) {//判空
+            String courseStr = JSON.toJSONString(examinationList);
+            examinationArray = JSONArray.parseArray(courseStr);
+            responseObject.put("data", examinationArray);
             responseObject.put("code", true);
             return responseObject;
         } else {
@@ -53,50 +53,50 @@ public class CourseTableController {
             loginObject = SystemHandler.studentLogin(studentId, studentPassword);
             //判断登陆状态
             if (loginObject.get("code").equals(true)) {
-                classArrayFromSystem = SystemHandler.takeClassTable(Integer.parseInt(schoolYear));
+                examinationArrayFromSystem = SystemHandler.takeClassTable(Integer.parseInt(schoolYear));
                 //状态码永远在数组第0位
-                String statusCode = classArrayFromSystem.getJSONObject(0).get("code").toString();
+                String statusCode = examinationArrayFromSystem.getJSONObject(0).get("code").toString();
                 //判断课表获取状态
                 if (statusCode.equals("true")) {
-                    classArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
-                    courseService.addCourseTable(classArrayFromSystem, studentId);
-                    return getClassTable(studentId, schoolYear, studentPassword);
+                    examinationArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
+                    examinationService.addExamination(examinationArrayFromSystem, studentId);
+                    return getExamination(studentId, schoolYear, studentPassword);
                 } else {
-                    return classArrayFromSystem.getJSONObject(0);
+                    return examinationArrayFromSystem.getJSONObject(0);
                 }
             } else {
-                logger.info("用户 [{}] 未登录",studentId);
+                logger.info("用户 [{}] 未登录", studentId);
                 return loginObject;
             }
         }
     }
 
-//    更新课表
-    @RequestMapping(value = "/classtable", method = RequestMethod.PUT)
-    public JSONObject updateClassTable(String studentId, String studentPassword, String schoolYear) throws IOException{
+    //    更新课表
+    @RequestMapping(value = "/examination", method = RequestMethod.PUT)
+    public JSONObject updateExamination(String studentId, String studentPassword, String schoolYear) throws IOException{
         //从studentLogin返回的JSON对象
         JSONObject loginObject;
         //初始化函数返回的JSON对象
         JSONObject responseObject = new JSONObject();
         //定义课表数组
-        JSONArray courseArray;
+        JSONArray examinationArray;
         //从教务系统获取的课表
-        JSONArray classArrayFromSystem;
+        JSONArray examinationArrayFromSystem;
 
         //执行登陆
         loginObject = SystemHandler.studentLogin(studentId, studentPassword);
         //判断登陆状态
         if (loginObject.get("code").equals(true)) {
-            classArrayFromSystem = SystemHandler.takeClassTable(Integer.parseInt(schoolYear));
+            examinationArrayFromSystem = SystemHandler.takeClassTable(Integer.parseInt(schoolYear));
             //状态码永远在数组第0位
-            String statusCode = classArrayFromSystem.getJSONObject(0).get("code").toString();
+            String statusCode = examinationArrayFromSystem.getJSONObject(0).get("code").toString();
             //判断课表获取状态
             if (statusCode.equals("true")) {
-                classArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
-                responseObject = courseService.updateCourseTable(classArrayFromSystem, studentId, schoolYear);
+                examinationArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
+                responseObject = examinationService.updateExamination(examinationArrayFromSystem, studentId, schoolYear);
                 return responseObject;
             } else {
-                return classArrayFromSystem.getJSONObject(0);
+                return examinationArrayFromSystem.getJSONObject(0);
             }
         } else {
             logger.info("用户 [{}] 未登录",studentId);
@@ -104,8 +104,8 @@ public class CourseTableController {
         }
     }
 
-//    删除课表
-    @RequestMapping(value = "/classtable", method = RequestMethod.DELETE)
+    //    删除课表
+    @RequestMapping(value = "/examination", method = RequestMethod.DELETE)
     public JSONObject deleteClassTable(@RequestBody JSONArray studentIdArray){
 //        构造一个存放学号的列表
         List<Long> studentIdList = new ArrayList<>();
@@ -114,7 +114,7 @@ public class CourseTableController {
             String tmpStr = studentIdArray.getString(i);
             studentIdList.add(Long.parseLong(tmpStr));
         }
-        JSONObject responseObject = courseService.deleteCourseTable(studentIdList);
+        JSONObject responseObject = examinationService.deleteExamination(studentIdList);
         return responseObject;
     }
 }

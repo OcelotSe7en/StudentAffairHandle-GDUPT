@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ocelot.model.Course;
+import com.ocelot.model.Examination;
 import com.ocelot.model.QualityExpansionActivity;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -77,11 +78,11 @@ public class SystemHandler {
                     loginFlag = 1;
                     jsonResponse.put("msg","成功登陆");
                     jsonResponse.put("code", true);
-                    logger.info("学号: "+account+" 登陆成功");
+                    logger.info("学号: [{}] 登陆成功", account);
                     return jsonResponse;
                 } else if (Objects.equals(status, "n")) {
                     loginFlag = 0;
-                    jsonResponse.put("data", data);
+                    jsonResponse.put("msg", "账号密码错误!");
                     jsonResponse.put("code", false);
                     logger.error(jsonResponse.toJSONString());
                     return jsonResponse;
@@ -89,7 +90,7 @@ public class SystemHandler {
                     loginFlag = 0;
                     jsonResponse.put("error","请求登陆失败!");
                     jsonResponse.put("code", false);
-                    logger.info("学号: "+account+" 登陆失败");
+                    logger.info("学号: [{}] 登陆失败", account);
                     logger.error(jsonResponse.toJSONString());
                     return jsonResponse;
                 }
@@ -136,7 +137,7 @@ public class SystemHandler {
             }
             return returnClassArray;
         } else {
-            logger.error("未登录,请先登录");
+            logger.error("从教务系统获取课表失败! 原因: 未登录,请先登录");
             statusCode.put("msg","未登录,请先登录");
             statusCode.put("code",false);
             returnClassArray.add(0,statusCode);
@@ -145,10 +146,6 @@ public class SystemHandler {
     }
 
     //从教务系统获得素拓分相关信息
-    /*
-    * TODO:
-    *  测试获取流程
-    * */
     public static JSONArray takeQualityExpansionActivities() throws IOException{
         QualityExpansionActivity activity = new QualityExpansionActivity();
         JSONObject statusCode = new JSONObject();//标识成功/失败
@@ -173,7 +170,45 @@ public class SystemHandler {
                 returnArray.add(activity);
             }
         }else{
-            logger.error("未登录,请先登录");
+            logger.error("从教务系统获取素拓分失败! 原因: 未登录,请先登录");
+            statusCode.put("msg","未登录,请先登录");
+            statusCode.put("code",false);
+            returnArray.add(0, statusCode);
+        }
+        return returnArray;
+    }
+
+    //从教务系统获得成绩信息
+    public static JSONArray takeExamination() throws IOException{
+        Examination examination;
+        JSONObject statusCode = new JSONObject();//标识成功/失败
+        JSONArray returnArray = new JSONArray();//返回的JSON数组
+
+        if(loginFlag == 1){
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            //下列两行表示: 请求一页显示500行数据(不这么写无法一次获得所有数据)
+            nvps.add(new BasicNameValuePair("page", "1"));
+            nvps.add(new BasicNameValuePair("rows", "500"));
+            CloseableHttpClient httpClient = HttpPoolUtil.getHttpClient();
+            HttpPost postExamination = new HttpPost("https://jwxt.gdupt.edu.cn/xskccjxx!getDataList.action");
+            postExamination.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
+            CloseableHttpResponse response = httpClient
+                    .execute(postExamination);
+            //获取响应头的实例
+            HttpEntity entity = response.getEntity();
+            //将实例转换为字符串
+            String entityStr = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+            //取出返回的JSON对象中装有成绩信息的rows
+            JSONArray examinationArray = JSON.parseObject(entityStr).getJSONArray("rows");
+            statusCode.put("code",true);
+            returnArray.add(statusCode);
+            for(int i = 0; i < examinationArray.size(); i++){
+                examination = JSON.parseObject(examinationArray.getJSONObject(i).toJSONString(),
+                        Examination.class);
+                returnArray.add(examination);
+            }
+        }else{
+            logger.error("从教务系统获取成绩失败! 原因: 未登录,请先登录");
             statusCode.put("msg","未登录,请先登录");
             statusCode.put("code",false);
             returnArray.add(0, statusCode);

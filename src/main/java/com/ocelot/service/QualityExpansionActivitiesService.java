@@ -1,6 +1,7 @@
 package com.ocelot.service;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.ocelot.model.QualityExpansionActivity;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface QualityExpansionActivitiesService {
     //新增素拓活动
     int addQualityExpansionActivity(JSONArray qeaArray, String studentId);
     //更新素拓活动
-    int updateQualityExpansionActivity(JSONArray qeaArray, String studentId);
+    JSONObject updateQualityExpansionActivity(JSONArray qeaArray, String studentId);
     //删除素拓活动
-    int deleteQualityExpansionActivityById(String studentId);
+    JSONObject deleteQualityExpansionActivity(List<Long> studentIdList);
 }

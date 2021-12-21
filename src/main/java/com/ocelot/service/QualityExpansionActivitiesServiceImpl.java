@@ -2,6 +2,7 @@ package com.ocelot.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.ocelot.mapper.CourseMapper;
 import com.ocelot.mapper.QualityExpansionActivitiesMapper;
 import com.ocelot.model.Course;
@@ -84,22 +85,28 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
             redisArray.add(insertMap);
 
             insertResult += qualityExpansionActivitiesMapper.addQEActivities(insertMap);
-            logger.debug("正在插入 "+ insertMap);
+
         }
+        logger.debug("插入的数据为 [{}]", redisArray);
         String qeaStr = redisArray.toJSONString();//转换成字符串,方便存进redis
         //将素拓活动存进redis
         operations.set(key, qeaStr);
-        logger.info("用户: "+studentId+" 已新增 "+insertResult+" 条素拓活动信息");
+        logger.info("用户: [{}] 已新增 [{}] 条素拓活动信息", studentId, insertResult);
         return insertResult;
     }
 
     @Override
-    public int updateQualityExpansionActivity(JSONArray qeaArray, String studentId) {
+    public JSONObject updateQualityExpansionActivity(JSONArray qeaArray, String studentId) {
+        JSONObject responseObject = new JSONObject();
         int updateResult = 0;
         String activitySensorStatus;
         Date activitySensorTime;
         float activityScore;
         long activityId;
+        JSONArray redisArray = new JSONArray();
+
+        String key = studentId+"_Course";
+        ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
 
         if(!qeaArray.isEmpty() && studentId!=null && !studentId.equals("")){
             Long studentIdLong = Long.parseLong(studentId);
@@ -115,27 +122,40 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
                 updateMap.put("activitySensorTime", activitySensorTime);
                 updateMap.put("studentId", studentIdLong);
                 updateResult += qualityExpansionActivitiesMapper.updateQEActivity(updateMap);
-                logger.debug("正在插入 "+ updateMap);
+                redisArray.add(updateMap);
             }
-            logger.info("用户: "+studentId+" 已更新 "+updateResult+" 条素拓活动信息");
-            return updateResult;
+            //将数据存入Redis
+            operations.set(key, redisArray);
+            logger.debug("用户: [{}] 更新数据为: [{}], 共[{}]条数据", studentId, redisArray, updateResult);
+            responseObject.put("msg","更新成功");
+            responseObject.put("code",true);
+            logger.info("用户: [{}] 已更新 [{}] 条课程信息", studentId, updateResult);
+        }else{
+            responseObject.put("msg","列表不能为空!");
+            responseObject.put("code", false);
         }
-        return 0;
+        return responseObject;
     }
 
     @Override
-    public int deleteQualityExpansionActivityById(String studentId) {
+    public JSONObject deleteQualityExpansionActivity(List<Long> studentIdList) {
+        //删除结果计数
         int deleteResult = 0;
+        JSONObject responseObject = new JSONObject();
 
-        if(studentId!=null && !studentId.equals("")){
-            Long studentIdLong = Long.parseLong(studentId);
-            redisTemplate.delete(studentId);
-            deleteResult +=  qualityExpansionActivitiesMapper.deleteQEActivitiesByStudentId(studentIdLong);
-            logger.info("已删除用户: "+studentId+"的"+deleteResult+"条素拓活动信息");
-            return deleteResult;
-        }else{
-            logger.error("学号不能为空");
-            return 0;
+        if(!studentIdList.isEmpty()){
+            for(int i=0; i<studentIdList.size(); i++){
+                redisTemplate.delete(studentIdList.get(i)+"_Course");
+            }
+            deleteResult = qualityExpansionActivitiesMapper.deleteQEActivitiesByStudentId(studentIdList);
+            responseObject.put("result", deleteResult);
+            responseObject.put("code", true);
+            logger.info("已批量删除: [{}] 的素拓分记录, 共删除: [{}] 条", studentIdList, deleteResult);
+        }else {
+            responseObject.put("msg", "学号列表不能为空");
+            responseObject.put("code", false);
+            logger.warn("学号List不能为空");
         }
+        return responseObject;
     }
 }

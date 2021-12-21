@@ -9,12 +9,12 @@ import java.util.Map;
 
 public interface CourseService {
     //查询课表
-    List<Course> selectCourseTable(String studentId, String schoolYear);
+    List<Course> selectCourseTable(String studentId, String schoolYearAndTerm);
     //新增课表
     void addCourseTable(JSONArray courseArray, String studentId);
     //更新课表
     JSONObject updateCourseTable(JSONArray systemCourseArray, String studentId, String schoolYear);
-    //删除指定用户的课表
+    //删除课表
     JSONObject deleteCourseTable(List<Long> studentIdList);
 }
 

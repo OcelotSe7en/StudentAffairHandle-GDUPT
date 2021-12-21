@@ -3,15 +3,11 @@ package com.ocelot.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ocelot.config.RedisConfig;
 import com.ocelot.mapper.CourseMapper;
 import com.ocelot.model.Course;
-import com.ocelot.util.SystemHandler;
-import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -19,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Service("CourseService")
 public class CourseServiceImpl implements CourseService {
@@ -32,24 +27,25 @@ public class CourseServiceImpl implements CourseService {
 
     /**
      * 从Redis/MySql查询课表
-     * @param studentId 学号,不允许为空
-     * @param schoolYear 学年学期,允许为空,格式为"年份+学期(01/02)",例如"202101"表示2021-2022学年第一学期
+     *
+     * @param studentId         学号,不允许为空
+     * @param schoolYearAndTerm 学年学期,允许为空,格式为"年份+学期(01/02)",例如"202101"表示2021-2022学年第一学期
      * @return courseList 返回一个List类型的课表
      */
     @Override
-    public List<Course> selectCourseTable(String studentId, String schoolYear) throws NullPointerException {
+    public List<Course> selectCourseTable(String studentId, String schoolYearAndTerm) throws NullPointerException {
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
         List<Course> courseList;
         Map<String, String> selectMap = new HashMap<>();
         String key = studentId + "_Course";
 
-        if(Boolean.TRUE.equals(redisTemplate.hasKey(key))){
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
             String classStr = operations.get(key);
             courseList = JSON.parseArray(classStr, Course.class);
             return courseList;
-        } else{
+        } else {
             selectMap.put("studentId", studentId);
-            selectMap.put("schoolYear", schoolYear);
+            selectMap.put("schoolYear", schoolYearAndTerm);
             courseList = courseMapper.selectCourseTable(selectMap);
             return courseList;
         }
@@ -57,8 +53,9 @@ public class CourseServiceImpl implements CourseService {
 
     /**
      * 向Redis/Mysql新增课表
+     *
      * @param courseArray 从教务系统获取的课表,不允许为空
-     * @param studentId 学号,不允许为空
+     * @param studentId   学号,不允许为空
      */
     @Override
     public void addCourseTable(JSONArray courseArray, String studentId) {
@@ -69,10 +66,10 @@ public class CourseServiceImpl implements CourseService {
         JSONArray redisArray = new JSONArray();
 
         long studentIdLong = Long.parseLong(studentId);
-        String key = studentId+"_Course";
+        String key = studentId + "_Course";
         ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
 
-        for(int i = 0; i < courseArray.size(); i++){
+        for (int i = 0; i < courseArray.size(); i++) {
             courseName = courseArray.getJSONObject(i).getString("courseName");
             courseTeacher = courseArray.getJSONObject(i).getString("courseTeacher");
             courseLocation = courseArray.getJSONObject(i).getString("courseLocation");
@@ -94,8 +91,8 @@ public class CourseServiceImpl implements CourseService {
             redisArray.add(insertMap);
 
             insertResult += courseMapper.addCourseTable(insertMap);
-            logger.debug("正在插入 [{}]", insertMap);
         }
+        logger.debug("用户: [{}] 更新数据为: [{}], 共[{}]条数据", studentId, redisArray, insertResult);
         String courseStr = JSONArray.toJSONString(redisArray);
         //将数据存入Redis
         operations.set(key, courseStr);
@@ -104,21 +101,26 @@ public class CourseServiceImpl implements CourseService {
 
     /**
      * 向Redis/MySql更新课表
+     *
      * @param systemCourseArray 从教务系统获取的课表数组，用于更新
-     * @param studentId 学号,不允许为空
-     * @param schoolYear 学年学期,允许为空,格式为"年份+学期(01/02)",例如"202101"表示2021-2022学年第一学期
+     * @param studentId         学号,不允许为空
+     * @param schoolYear        学年学期,允许为空,格式为"年份+学期(01/02)",例如"202101"表示2021-2022学年第一学期
      * @return responseObject 一个JSONObject，用于存放返回的信息
      */
     @Override
     public JSONObject updateCourseTable(JSONArray systemCourseArray, String studentId, String schoolYear) {
         JSONObject responseObject = new JSONObject();
+        JSONArray redisArray = new JSONArray();
         int updateResult = 0;
         String courseName, courseTeacher, courseLocation,
                 courseWeekDay, courseClass, courseWeek, courseSchoolYear;
         long studentIdLong = Long.parseLong(studentId);
 
-        if(!systemCourseArray.isEmpty()){
-            for(int i = 0; i < systemCourseArray.size(); i++){
+        String key = studentId + "_Course";
+        ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
+
+        if (!systemCourseArray.isEmpty()) {
+            for (int i = 0; i < systemCourseArray.size(); i++) {
                 courseName = systemCourseArray.getJSONObject(i).getString("courseName");
                 courseTeacher = systemCourseArray.getJSONObject(i).getString("courseTeacher");
                 courseLocation = systemCourseArray.getJSONObject(i).getString("courseLocation");
@@ -136,13 +138,16 @@ public class CourseServiceImpl implements CourseService {
                 updateMap.put("courseSchoolYear", courseSchoolYear);
                 updateMap.put("studentId", studentIdLong);
                 updateResult += courseMapper.updateCourseTable(updateMap);
-                logger.debug("正在更新 "+updateMap);
+                redisArray.add(updateMap);
             }
-            responseObject.put("msg","更新成功");
-            responseObject.put("code",true);
-            logger.info("用户: [{}] 已更新 [{}] 条课程信息",studentId , updateResult);
-        }else{
-            responseObject.put("msg","列表不能为空!");
+            //将数据存入Redis
+            operations.set(key, redisArray);
+            logger.debug("用户: [{}] 更新数据为: [{}], 共[{}]条数据", studentId, redisArray, updateResult);
+            responseObject.put("msg", "更新成功");
+            responseObject.put("code", true);
+            logger.info("用户: [{}] 已更新 [{}] 条课程信息", studentId, updateResult);
+        } else {
+            responseObject.put("msg", "列表不能为空!");
             responseObject.put("code", false);
         }
         return responseObject;
@@ -150,6 +155,7 @@ public class CourseServiceImpl implements CourseService {
 
     /**
      * 向Redis/MySql更新课表
+     *
      * @param studentIdList 学号列表，用于批量删除学号
      * @return responseObject 一个JSONObject，用于存放返回的信息
      */
@@ -159,15 +165,15 @@ public class CourseServiceImpl implements CourseService {
         int deleteResult = 0;
         JSONObject responseObject = new JSONObject();
 
-        if(!studentIdList.isEmpty()){
-            for(int i=0; i<studentIdList.size(); i++){
-                redisTemplate.delete(studentIdList.get(i)+"_Course");
+        if (!studentIdList.isEmpty()) {
+            for (int i = 0; i < studentIdList.size(); i++) {
+                redisTemplate.delete(studentIdList.get(i) + "_Course");
             }
             deleteResult = courseMapper.deleteCourseTable(studentIdList);
             responseObject.put("result", deleteResult);
             responseObject.put("code", true);
-          logger.info("已批量删除: [{}] 的记录, 共删除: [{}] 条", studentIdList, deleteResult);
-        }else {
+            logger.info("已批量删除: [{}] 的课表记录, 共删除: [{}] 条", studentIdList, deleteResult);
+        } else {
             responseObject.put("msg", "学号列表不能为空");
             responseObject.put("code", false);
             logger.warn("学号List不能为空");

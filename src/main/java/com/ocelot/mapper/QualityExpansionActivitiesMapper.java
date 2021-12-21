@@ -19,5 +19,5 @@ public interface QualityExpansionActivitiesMapper {
     //更新素拓活动
     int updateQEActivity(Map<Object, Object> map);
     //删除指定用户的素拓活动
-    int deleteQEActivitiesByStudentId(Long studentId);
+    int deleteQEActivitiesByStudentId(List<Long> studentIdList);
 }
