@@ -40,24 +40,29 @@ public class QEActivityController {
             returnObject.put("code", true);
             return returnObject;
         } else {
-            //执行登陆
-            loginObject = SystemHandler.studentLogin(studentId, studentPassword);
-            //判断登陆状态
-            if (loginObject.get("code").equals(true)) {
-                qeaArrayFromSystem = SystemHandler.takeQualityExpansionActivities();
-                //状态码永远在数组第0位
-                String statusCode = qeaArrayFromSystem.getJSONObject(0).get("code").toString();
-                //判断素拓分列表获取状态
-                if (statusCode.equals("true")) {
-                    qeaArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
-                    qeaService.addQualityExpansionActivity(qeaArrayFromSystem, studentId);
-                    return getQEActivity(studentId, studentPassword);
+            if(studentId.isEmpty()||studentPassword.isEmpty()||studentPassword.isBlank()||studentId.isBlank()){
+                returnObject.put("msg","请输入教务系统的账号密码!");
+                returnObject.put("code", false);
+                return returnObject;
+            }else{//执行登陆
+                loginObject = SystemHandler.studentLogin(studentId, studentPassword);
+                //判断登陆状态
+                if (loginObject.get("code").equals(true)) {
+                    qeaArrayFromSystem = SystemHandler.takeQualityExpansionActivities();
+                    //状态码永远在数组第0位
+                    String statusCode = qeaArrayFromSystem.getJSONObject(0).get("code").toString();
+                    //判断素拓分列表获取状态
+                    if (statusCode.equals("true")) {
+                        qeaArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
+                        qeaService.addQualityExpansionActivity(qeaArrayFromSystem, studentId);
+                        return getQEActivity(studentId, studentPassword);
+                    } else {
+                        return qeaArrayFromSystem.getJSONObject(0);
+                    }
                 } else {
-                    return qeaArrayFromSystem.getJSONObject(0);
+                    logger.info("用户 [{}] 未登录",studentId);
+                    return loginObject;
                 }
-            } else {
-                logger.info("用户 [{}] 未登录",studentId);
-                return loginObject;
             }
         }
     }
@@ -83,8 +88,7 @@ public class QEActivityController {
             //判断素拓分列表获取状态
             if (statusCode.equals("true")) {
                 qeaArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
-                qeaService.updateQualityExpansionActivity(qeaArrayFromSystem, studentId);
-                return getQEActivity(studentId, studentPassword);
+                return qeaService.updateQualityExpansionActivity(qeaArrayFromSystem, studentId);
             } else {
                 return qeaArrayFromSystem.getJSONObject(0);
             }
@@ -103,7 +107,6 @@ public class QEActivityController {
             String tmpStr = studentIdArray.getString(i);
             studentIdList.add(Long.parseLong(tmpStr));
         }
-        JSONObject responseObject = qeaService.deleteQualityExpansionActivity(studentIdList);
-        return responseObject;
+        return qeaService.deleteQualityExpansionActivity(studentIdList);
     }
 }

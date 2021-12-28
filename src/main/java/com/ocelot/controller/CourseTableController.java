@@ -49,24 +49,31 @@ public class CourseTableController {
             responseObject.put("code", true);
             return responseObject;
         } else {
-            //执行登陆
-            loginObject = SystemHandler.studentLogin(studentId, studentPassword);
-            //判断登陆状态
-            if (loginObject.get("code").equals(true)) {
-                classArrayFromSystem = SystemHandler.takeClassTable(Integer.parseInt(schoolYear));
-                //状态码永远在数组第0位
-                String statusCode = classArrayFromSystem.getJSONObject(0).get("code").toString();
-                //判断课表获取状态
-                if (statusCode.equals("true")) {
-                    classArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
-                    courseService.addCourseTable(classArrayFromSystem, studentId);
-                    return getClassTable(studentId, schoolYear, studentPassword);
+//            判断学号密码是否正确输入
+            if(studentId.isEmpty()||studentPassword.isEmpty()||studentPassword.isBlank()||studentId.isBlank()){
+                responseObject.put("msg","请输入教务系统的账号密码!");
+                responseObject.put("code", false);
+                return responseObject;
+            }else{
+                //执行登陆
+                loginObject = SystemHandler.studentLogin(studentId, studentPassword);
+                //判断登陆状态
+                if (loginObject.get("code").equals(true)) {
+                    classArrayFromSystem = SystemHandler.takeClassTable(Integer.parseInt(schoolYear));
+                    //状态码永远在数组第0位
+                    String statusCode = classArrayFromSystem.getJSONObject(0).get("code").toString();
+                    //判断课表获取状态
+                    if (statusCode.equals("true")) {
+                        classArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
+                        courseService.addCourseTable(classArrayFromSystem, studentId);
+                        return getClassTable(studentId, schoolYear, studentPassword);
+                    } else {
+                        return classArrayFromSystem.getJSONObject(0);
+                    }
                 } else {
-                    return classArrayFromSystem.getJSONObject(0);
+                    logger.info("用户 [{}] 未登录",studentId);
+                    return loginObject;
                 }
-            } else {
-                logger.info("用户 [{}] 未登录",studentId);
-                return loginObject;
             }
         }
     }
