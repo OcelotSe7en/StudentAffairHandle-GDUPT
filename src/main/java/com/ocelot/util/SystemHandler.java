@@ -82,9 +82,10 @@ public class SystemHandler {
                     return jsonResponse;
                 } else if (Objects.equals(status, "n")) {
                     loginFlag = 0;
-                    jsonResponse.put("msg", "账号密码错误!");
+                    jsonResponse.put("msg", msg);
                     jsonResponse.put("code", false);
                     logger.error(jsonResponse.toJSONString());
+                    logger.error(msg);
                     return jsonResponse;
                 } else {
                     loginFlag = 0;

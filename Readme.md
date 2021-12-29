@@ -1,20 +1,20 @@
-#教务系统对接模块
+# 教务系统对接模块
 
-##一. 简介
+## 一. 简介
 + 本项目是微校园项目的子项目，用于获取GDUPT教务系统中的成绩、课表以及素拓分数据。
 + 涉及到技术：SpringCloud | Consul | Mybatis | MySql | Redis
 
-##二. 部署
+## 二. 部署
 >+ 执行mvn package之后，在docker中找到镜像即可部署。
 
 >**提示**：因微校园项目要求，本模块需配合Docker和Consul使用，如需在Tomcat下运行，请按下列步骤修改：
 >1. 找到并打开`src/main/resources/application.yml`
 >2. 将`consul`中的内容全部删除
 
-##三.模块暴露的接口
+## 三.模块暴露的接口
 + [API](API.md)
 
-##四. 问题记录
+## 四. 问题记录
 1. 执行maven package之后，运行jar，提示  
 `Could not resolve placeholder 'spring.datasource.url'`  
 * **解决方法：**  

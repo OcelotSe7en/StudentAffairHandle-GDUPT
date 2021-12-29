@@ -141,7 +141,7 @@ public class CourseServiceImpl implements CourseService {
                 redisArray.add(updateMap);
             }
             //将数据存入Redis
-            operations.set(key, redisArray);
+            operations.set(key, redisArray.toJSONString());
             logger.debug("用户: [{}] 更新数据为: [{}], 共[{}]条数据", studentId, redisArray, updateResult);
             responseObject.put("msg", "更新成功");
             responseObject.put("code", true);
