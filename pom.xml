@@ -12,7 +12,7 @@
     <artifactId>gdupt_student_api</artifactId>
     <version>1.0</version>
     <name>gdupt_student_api</name>
-    <description>StudentAffairHandle</description>
+    <description>A Module that communicate with GDUPT-StudentSystem</description>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -149,7 +149,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>${project.artifactId}</repository>
+                    <repository>ghcr.io/ocelotse7en/${project.artifactId}</repository>
                     <tag>${project.version}</tag>
                     <buildArgs>
                         <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
