@@ -128,11 +128,11 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
             operations.set(key, redisArray.toJSONString());
             logger.debug("用户: [{}] 更新数据为: [{}], 共[{}]条数据", studentId, redisArray, updateResult);
             responseObject.put("msg","更新成功");
-            responseObject.put("code",true);
+            responseObject.put("code",200);
             logger.info("用户: [{}] 已更新 [{}] 条课程信息", studentId, updateResult);
         }else{
-            responseObject.put("msg","列表不能为空!");
-            responseObject.put("code", false);
+            responseObject.put("msg","即将更新的素拓分列表为空!");
+            responseObject.put("code", 403);
         }
         return responseObject;
     }

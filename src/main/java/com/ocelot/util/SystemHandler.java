@@ -77,20 +77,20 @@ public class SystemHandler {
                 if (Objects.equals(status, "y")) {
                     loginFlag = 1;
                     jsonResponse.put("msg","成功登陆");
-                    jsonResponse.put("code", true);
+                    jsonResponse.put("code", 200);
                     logger.info("学号: [{}] 登陆成功", account);
                     return jsonResponse;
                 } else if (Objects.equals(status, "n")) {
                     loginFlag = 0;
                     jsonResponse.put("msg", msg);
-                    jsonResponse.put("code", false);
+                    jsonResponse.put("code", 403);
                     logger.error(jsonResponse.toJSONString());
                     logger.error(msg);
                     return jsonResponse;
                 } else {
                     loginFlag = 0;
-                    jsonResponse.put("error","请求登陆失败!");
-                    jsonResponse.put("code", false);
+                    jsonResponse.put("error","请求登陆失败!请检查日志!");
+                    jsonResponse.put("code", 500);
                     logger.info("学号: [{}] 登陆失败", account);
                     logger.error(jsonResponse.toJSONString());
                     return jsonResponse;
@@ -101,7 +101,7 @@ public class SystemHandler {
         } else {
             loginFlag = 0;
             jsonResponse.put("error","访问失败,请确认教务系统能否正常访问");
-            jsonResponse.put("code: ", false);
+            jsonResponse.put("code: ", 500);
             return jsonResponse;
         }
     }

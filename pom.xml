@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.ocelot</groupId>
     <artifactId>gdupt_student_api</artifactId>
-    <version>1.0</version>
+    <version>1.2</version>
     <name>gdupt_student_api</name>
     <description>A Module that communicate with GDUPT-StudentSystem</description>
     <properties>
