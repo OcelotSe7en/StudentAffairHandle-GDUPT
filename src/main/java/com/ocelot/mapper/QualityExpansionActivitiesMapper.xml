@@ -19,7 +19,7 @@
 
     <!-- 表查询字段 -->
     <sql id="allColumns">
-        qea.activity_id ,qea.activity_name, qea.activity_school_year_term, qea.activity_time, qea.activity_score, qea.activity_sensor_status, qea.activity_sensor_time, qea.activity.student_id
+        qea.activity_id ,qea.activity_name, qea.activity_school_year_term, qea.activity_time, qea.activity_score, qea.activity_sensor_status, qea.activity_sensor_time, qea.student_id
     </sql>
 
     <!-- 根据条件参数查询列表 -->
@@ -41,10 +41,8 @@
     <select id="selectQEActivitiesByStudentId" resultMap="qualityExpansionActivitiesMap" parameterType="map">
         SELECT
         <include refid="allColumns" />
-        FROM quality_expansion_activities qea WHERE 1 = 1
-        <if test="activityName != null and activityName != ''">
-            AND qea.student_id LIKE CONCAT('%', #{studentId} '%')
-        </if>
+        FROM quality_expansion_activities qea WHERE
+        qea.student_id = #{studentId}
     </select>
 
     <!-- 新增信息 -->

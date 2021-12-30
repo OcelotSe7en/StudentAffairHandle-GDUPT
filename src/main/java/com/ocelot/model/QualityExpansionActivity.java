@@ -2,8 +2,6 @@ package com.ocelot.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-import java.util.Date;
-
 //素拓的Model, 暂未找到素拓分的信达雅翻译, 只能直球翻译
 public class QualityExpansionActivity {
     //素拓活动编号
@@ -14,7 +12,7 @@ public class QualityExpansionActivity {
     String activityName;
     //素拓活动的学年学期时间
     @JSONField(alternateNames = "xnxqdm")
-    String schoolYearTerm;
+    String activitySchoolYearTerm;
     //素拓活动开展时间
     @JSONField(alternateNames = "kzsj")
     String activityTime;
@@ -49,12 +47,12 @@ public class QualityExpansionActivity {
         this.activityName = activityName;
     }
 
-    public String getSchoolYearTerm() {
-        return schoolYearTerm;
+    public String getActivitySchoolYearTerm() {
+        return activitySchoolYearTerm;
     }
 
-    public void setSchoolYearTerm(String schoolYearTerm) {
-        this.schoolYearTerm = schoolYearTerm;
+    public void setActivitySchoolYearTerm(String activitySchoolYearTerm) {
+        this.activitySchoolYearTerm = activitySchoolYearTerm;
     }
 
     public String getActivityTime() {

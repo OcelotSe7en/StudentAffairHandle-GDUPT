@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /*素拓分Controller*/
+@RestController//RestController返回JSON, Controller返回页面
 @RequestMapping("/api")
 public class QEActivityController {
     private static final Logger logger = LoggerFactory.getLogger(SystemHandler.class);
@@ -108,7 +110,7 @@ public class QEActivityController {
         return responseObject;
     }
 //    删除素拓活动
-    @RequestMapping(value = "/classtable", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/qeactivity", method = RequestMethod.DELETE)
     public JSONObject deleteClassTable(@RequestBody JSONArray studentIdArray) {
         JSONObject responseObject = new JSONObject();
         if (!studentIdArray.isEmpty()) {

@@ -37,8 +37,8 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
         Map<Object, Object> selectMap = new HashMap<>();
         Long studentIdLong = Long.parseLong(studentId);
         String key = studentId + "_QEActivities";
-
-        if(Boolean.TRUE.equals(redisTemplate.hasKey(key))){
+        logger.info(redisTemplate.hasKey(key).toString());
+        if(redisTemplate.hasKey(key)){
             String classStr = operations.get(key);
             qeaList = JSON.parseArray(classStr, QualityExpansionActivity.class);
         } else{
