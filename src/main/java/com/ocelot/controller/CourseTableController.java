@@ -30,30 +30,34 @@ public class CourseTableController {
     public JSONObject getClassTable(String studentId, String studentPassword, String schoolYear) throws IOException {
         //从studentLogin返回的JSON对象
         JSONObject loginObject;
-        //初始化函数返回的JSON对象
+        //初始化方法返回的JSON对象
         JSONObject responseObject = new JSONObject();
-        //定义课表数组
+        //学期数组，学期数组包含每周课表数据。
+        JSONArray termArray = new JSONArray();
+        //周数组，包含每日课表数据.
+        JSONArray weekArray = new JSONArray();
+        //日数组，包含每节次课表数据。
+        JSONArray dayArray = new JSONArray();
         JSONArray courseArray;
+        Course course;
         //从教务系统获取的课表
         JSONArray classArrayFromSystem;
 
-        if (!studentId.isEmpty() || !studentId.isBlank()) {
+        if (studentId != null &&!studentId.isEmpty() && !studentId.isBlank()) {
             //从数据库/Redis获取课表
             List<Course> courseList = courseService.selectCourseTable(studentId, schoolYear);
             /*判断有无课表,有则带状态码返回课表,无则进入系统获取*/
             if (!courseList.isEmpty()) {//判空
-                String courseStr = JSON.toJSONString(courseList);
-                courseArray = JSONArray.parseArray(courseStr);
+                courseArray = JSONArray.parseArray(JSON.toJSONString(courseList));
                 responseObject.put("data", courseArray);
                 responseObject.put("code", 200);
-                return responseObject;
             } else {
 //            判断学号密码是否正确输入
-                if (!studentPassword.isEmpty() || !studentPassword.isBlank()) {
+                if (studentPassword != null && !studentPassword.isEmpty() && !studentPassword.isBlank()) {
                     //执行登陆
                     loginObject = SystemHandler.studentLogin(studentId, studentPassword);
                     //判断登陆状态
-                    if (loginObject.get("code").equals(true)) {
+                    if (loginObject.get("code").equals(200)) {
                         classArrayFromSystem = SystemHandler.takeClassTable(Integer.parseInt(schoolYear));
                         //状态码永远在数组第0位
                         String statusCode = classArrayFromSystem.getJSONObject(0).get("code").toString();
@@ -61,6 +65,7 @@ public class CourseTableController {
                         if (statusCode.equals("true")) {
                             classArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
                             courseService.addCourseTable(classArrayFromSystem, studentId);
+                            courseService.addCourseTableToRedis(studentId, courseService.selectCourseTable(studentId, schoolYear));
                             return getClassTable(studentId, schoolYear, studentPassword);
                         } else {
                             return classArrayFromSystem.getJSONObject(0);
@@ -72,14 +77,13 @@ public class CourseTableController {
                 } else {
                     responseObject.put("msg", "请输入教务系统的账号密码!");
                     responseObject.put("code", 403);
-                    return responseObject;
                 }
             }
         } else {
             responseObject.put("msg", "请输入学号!");
             responseObject.put("code", 403);
-            return responseObject;
         }
+        return responseObject;
     }
 
     //    更新课表
@@ -94,11 +98,11 @@ public class CourseTableController {
         //从教务系统获取的课表
         JSONArray classArrayFromSystem;
 
-        if (!studentId.isEmpty() || !studentId.isBlank() || !studentPassword.isEmpty() || !studentPassword.isBlank()) {
+        if (studentId != null && studentPassword != null && !studentId.isEmpty() && !studentId.isBlank() && !studentPassword.isEmpty() && !studentPassword.isBlank()) {
             //执行登陆
             loginObject = SystemHandler.studentLogin(studentId, studentPassword);
             //判断登陆状态
-            if (loginObject.get("code").equals(true)) {
+            if (loginObject.get("code").equals(200)) {
                 classArrayFromSystem = SystemHandler.takeClassTable(Integer.parseInt(schoolYear));
                 //状态码永远在数组第0位
                 String statusCode = classArrayFromSystem.getJSONObject(0).get("code").toString();

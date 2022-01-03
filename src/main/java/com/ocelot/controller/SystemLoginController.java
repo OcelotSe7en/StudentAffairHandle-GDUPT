@@ -13,17 +13,17 @@ import java.io.IOException;
 @RequestMapping("/api")
 public class SystemLoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public JSONObject studentLogin(String studentId, String studentPwd) throws IOException {
+    public JSONObject studentLogin(String studentId, String studentPassword) throws IOException {
         JSONObject returnObject = new JSONObject();
         JSONObject loginObject;
         //            判断学号密码是否正确输入
-        if(studentId.isEmpty()||studentPwd.isEmpty()||studentPwd.isBlank()||studentId.isBlank()){
+        if(studentId == null|| studentPassword == null || studentId.isEmpty() || studentPassword.isEmpty() || studentPassword.isBlank() || studentId.isBlank()){
             returnObject.put("msg","请输入教务系统的账号密码!");
             returnObject.put("code", false);
             return returnObject;
         }else {
             //执行登陆
-            loginObject = SystemHandler.studentLogin(studentId, studentPwd);
+            loginObject = SystemHandler.studentLogin(studentId, studentPassword);
             //判断登陆状态
             if (loginObject.get("code").equals(true)) {
                 returnObject.put("msg","登陆成功!");

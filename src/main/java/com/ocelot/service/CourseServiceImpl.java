@@ -24,7 +24,6 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     RedisTemplate redisTemplate;
 
-
     /**
      * 从Redis/MySql查询课表
      *
@@ -88,15 +87,15 @@ public class CourseServiceImpl implements CourseService {
             insertMap.put("studentId", studentIdLong);
 
             //将插入的数据存入jsonArray,方便存入redis
-            redisArray.add(insertMap);
+//            redisArray.add(insertMap);
 
             insertResult += courseMapper.addCourseTable(insertMap);
         }
         logger.debug("用户: [{}] 更新数据为: [{}], 共[{}]条数据", studentId, redisArray, insertResult);
-        String courseStr = JSONArray.toJSONString(redisArray);
+//        String courseStr = JSONArray.toJSONString(redisArray);
         //将数据存入Redis
-        operations.set(key, courseStr);
-        logger.info("用户: [{}] 已新增 [{}] 课表信息", studentId, insertResult);
+//        operations.set(key, courseStr);
+        logger.info("用户: [{}] 已新增 [{}] 课表信息至Mysql", studentId, insertResult);
     }
 
     /**
@@ -179,5 +178,16 @@ public class CourseServiceImpl implements CourseService {
             logger.warn("学号List不能为空");
         }
         return responseObject;
+    }
+
+    @Override
+    public void addCourseTableToRedis(String studentId ,List<Course> list){
+        String key = studentId + "_Course";
+        ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
+
+        String courseStr = JSON.toJSONString(list);
+        operations.set(key, courseStr);
+
+        logger.info("用户: [{}] 已新增课表信息至Redis", studentId);
     }
 }

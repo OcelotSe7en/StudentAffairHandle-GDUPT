@@ -16,5 +16,7 @@ public interface CourseService {
     JSONObject updateCourseTable(JSONArray systemCourseArray, String studentId, String schoolYear);
     //删除课表
     JSONObject deleteCourseTable(List<Long> studentIdList);
+
+    void addCourseTableToRedis(String studentId ,List<Course> list);
 }
 

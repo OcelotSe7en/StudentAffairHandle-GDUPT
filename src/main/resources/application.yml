@@ -4,7 +4,7 @@ spring:
   cloud:
     consul:
       #host.docker.internal等价于本机ip(如: 192.168.1.11)
-      host: host.docker.internal
+      host: 127.0.0.1
       port: 8500
       discovery:
         serviceName: gdupt-producer
@@ -57,3 +57,4 @@ logging:
     com.ocelot.mapper : debug
   file:
     path: src/main/resources/logs
+  

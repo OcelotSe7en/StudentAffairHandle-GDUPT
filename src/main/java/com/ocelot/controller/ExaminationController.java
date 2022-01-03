@@ -38,7 +38,7 @@ public class ExaminationController {
         //从教务系统获取的课表
         JSONArray examinationArrayFromSystem;
 
-        if (!studentId.isEmpty() || !studentId.isBlank()) {
+        if (studentId != null && !studentId.isEmpty() && !studentId.isBlank()) {
             //从数据库/Redis获取成绩
             List<Examination> examinationList = examinationService.selectExamination(studentId, schoolYear);
 
@@ -50,37 +50,36 @@ public class ExaminationController {
                 responseObject.put("code", 200);
                 return responseObject;
             } else {
-                if(studentId.isEmpty()||studentPassword.isEmpty()||studentPassword.isBlank()||studentId.isBlank()){
-                    responseObject.put("msg","请输入教务系统的账号密码!");
-                    responseObject.put("code", 403);
-                    return responseObject;
-                }else {
+                if (studentPassword != null && !studentPassword.isEmpty() && !studentPassword.isBlank()) {
                     //执行登陆
                     loginObject = SystemHandler.studentLogin(studentId, studentPassword);
                     //判断登陆状态
-                    if (loginObject.get("code").equals(true)) {
-                        examinationArrayFromSystem = SystemHandler.takeClassTable(Integer.parseInt(schoolYear));
+                    if (loginObject.get("code").equals(200)) {
+                        examinationArrayFromSystem = SystemHandler.takeExamination();
                         //状态码永远在数组第0位
                         String statusCode = examinationArrayFromSystem.getJSONObject(0).get("code").toString();
                         //判断课表获取状态
-                        if (statusCode.equals("true")) {
-                            examinationArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
+                        if (statusCode.equals("200")) {
+                            examinationArrayFromSystem.remove(0);//判断为200后,将数组首位的状态码删除
                             examinationService.addExamination(examinationArrayFromSystem, studentId);
                             return getExamination(studentId, schoolYear, studentPassword);
                         } else {
-                            return examinationArrayFromSystem.getJSONObject(0);
+                            responseObject = examinationArrayFromSystem.getJSONObject(0);
                         }
                     } else {
                         logger.info("用户 [{}] 未登录", studentId);
                         return loginObject;
                     }
+                } else {
+                    responseObject.put("msg", "请输入教务系统的账号密码!");
+                    responseObject.put("code", 403);
                 }
             }
-        }else{
+        } else {
             responseObject.put("msg", "请输入学号!");
             responseObject.put("code", 403);
-            return responseObject;
         }
+        return responseObject;
     }
 
     //    更新课表
@@ -95,18 +94,18 @@ public class ExaminationController {
         //从教务系统获取的课表
         JSONArray examinationArrayFromSystem;
 
-        if (!studentId.isEmpty() || !studentId.isBlank() || !studentPassword.isEmpty() || !studentPassword.isBlank()) {
+        if (studentId != null && studentPassword != null && !studentId.isEmpty() && !studentId.isBlank() && !studentPassword.isEmpty() && !studentPassword.isBlank()) {
 
             //执行登陆
             loginObject = SystemHandler.studentLogin(studentId, studentPassword);
             //判断登陆状态
-            if (loginObject.get("code").equals(true)) {
-                examinationArrayFromSystem = SystemHandler.takeClassTable(Integer.parseInt(schoolYear));
+            if (loginObject.get("code").equals(200)) {
+                examinationArrayFromSystem = SystemHandler.takeExamination();
                 //状态码永远在数组第0位
                 String statusCode = examinationArrayFromSystem.getJSONObject(0).get("code").toString();
                 //判断课表获取状态
-                if (statusCode.equals("true")) {
-                    examinationArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
+                if (statusCode.equals("200")) {
+                    examinationArrayFromSystem.remove(0);//判断为200后,将数组首位的状态码删除
                     responseObject = examinationService.updateExamination(examinationArrayFromSystem, studentId, schoolYear);
 
                 } else {

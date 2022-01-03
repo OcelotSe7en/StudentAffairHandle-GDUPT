@@ -66,7 +66,7 @@
 
     <!-- 批量修改信息 -->
     <update id="updateMultiExamination" parameterType="list">
-        <foreach collection="list" index="index" item="item" separator=";">
+        <foreach collection="list" index="index" item="item" open="" close="" separator=";">
             UPDATE examination
             <set>
                 <if test="item.examYearAndTerm != null">
@@ -86,9 +86,6 @@
                 </if>
                 <if test="item.examCredit != null">
                     exam_credit = #{item.examCredit},
-                </if>
-                <if test="item.examResultNumber != null">
-                    exam_result_number = #{item.examResultNumber},
                 </if>
                 <if test="item.examType != null">
                     exam_type = #{item.examType}

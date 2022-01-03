@@ -64,6 +64,7 @@
         <if test="courseSchoolYear != null and courseSchoolYear != ''">
             AND c.course_school_year_term LIKE CONCAT('%', #{courseSchoolYear}, '%')
         </if>
+        ORDER BY course_week, course_week_day, course_class
     </select>
 
     <!-- 新增信息 -->
