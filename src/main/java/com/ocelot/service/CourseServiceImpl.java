@@ -8,13 +8,14 @@ import com.ocelot.model.Course;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service("CourseService")
 public class CourseServiceImpl implements CourseService {
@@ -36,10 +37,10 @@ public class CourseServiceImpl implements CourseService {
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
         List<Course> courseList;
         Map<String, String> selectMap = new HashMap<>();
-        String key = studentId + "_Course_"+courseSchoolYearTerm;
+        String keys = studentId + "_Course_"+courseSchoolYearTerm;
 
-        if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
-            String classStr = operations.get(key);
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(keys))) {
+            String classStr = operations.get(keys);
             courseList = JSON.parseArray(classStr, Course.class);
             return courseList;
         } else {
@@ -65,8 +66,8 @@ public class CourseServiceImpl implements CourseService {
         JSONArray redisArray = new JSONArray();
 
         long studentIdLong = Long.parseLong(studentId);
-//        String key = studentId + "_Course";
-//        ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
+        String key = studentId + "_Course_"+courseArray.getJSONObject(0).getString("courseSchoolYearTerm");
+        ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
 
         for (int i = 0; i < courseArray.size(); i++) {
             courseName = courseArray.getJSONObject(i).getString("courseName");
@@ -87,15 +88,15 @@ public class CourseServiceImpl implements CourseService {
             insertMap.put("studentId", studentIdLong);
 
             //将插入的数据存入jsonArray,方便存入redis
-//            redisArray.add(insertMap);
+            redisArray.add(insertMap);
 
             insertResult += courseMapper.addCourseTable(insertMap);
         }
         logger.debug("用户: [{}] 更新数据为: [{}], 共[{}]条数据", studentId, redisArray, insertResult);
-//        String courseStr = JSONArray.toJSONString(redisArray);
-        //将数据存入Redis
-//        operations.set(key, courseStr);
-        logger.info("用户: [{}] 已新增 [{}] 课表信息至Mysql", studentId, insertResult);
+        String courseStr = JSONArray.toJSONString(redisArray);
+//        将数据存入Redis
+        operations.set(key, courseStr);
+        logger.info("用户: [{}] 已新增 [{}] 课表信息至Mysql&Redis", studentId, insertResult);
     }
 
     /**
@@ -166,12 +167,28 @@ public class CourseServiceImpl implements CourseService {
 
         if (!studentIdList.isEmpty()) {
             for (int i = 0; i < studentIdList.size(); i++) {
-                redisTemplate.delete(studentIdList.get(i) + "_Course");
+                String keys = studentIdList.get(i) + "_Course*";
+                RedisCallback<Long> redisCallback = connection -> {
+                    ScanOptions.ScanOptionsBuilder scanOptionsBuilder = ScanOptions.scanOptions();
+                    scanOptionsBuilder.match(keys);
+                    ScanOptions scanOptions = scanOptionsBuilder.build();
+                    Cursor<byte[]> cursor = connection.scan(scanOptions);
+                    long count = 0;
+                    while (cursor.hasNext()) {
+                        count += connection.del(cursor.next());     //count为所有删除成功次数的总和
+                    }
+                    return count;
+
+                };
+                Long count = (Long) redisTemplate.execute(redisCallback);
             }
+
+
             deleteResult = courseMapper.deleteCourseTable(studentIdList);
             responseObject.put("result", deleteResult);
             responseObject.put("code", true);
             logger.info("已批量删除: [{}] 的课表记录, 共删除: [{}] 条", studentIdList, deleteResult);
+
         } else {
             responseObject.put("msg", "学号列表不能为空");
             responseObject.put("code", false);
@@ -192,4 +209,6 @@ public class CourseServiceImpl implements CourseService {
 
         logger.info("用户: [{}] 已新增课表信息至Redis", studentId);
     }
+
+
 }

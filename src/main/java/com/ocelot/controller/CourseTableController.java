@@ -30,6 +30,7 @@ public class CourseTableController {
     CourseService courseService;
 
     //  查询课表
+
     @RequestMapping(value = "/classtable", method = RequestMethod.POST)
     public JSONObject getClassTable(String studentId, String studentPassword, String schoolYear) throws IOException {
         //从studentLogin返回的JSON对象
@@ -38,16 +39,17 @@ public class CourseTableController {
         JSONObject responseObject = new JSONObject();
         //学期数组，学期数组包含每周课表数据。
         JSONArray termArray = new JSONArray();
-
         //从教务系统获取的课表
         JSONArray classArrayFromSystem;
 
         if (studentId != null &&!studentId.isEmpty() && !studentId.isBlank()) {
+
             //从数据库/Redis获取课表
             List<Course> courseList = courseService.selectCourseTable(studentId, schoolYear);
 
             /*判断有无课表,有则带状态码返回课表,无则进入系统获取*/
             if (!courseList.isEmpty()) {
+
                 Map<Integer, List<Course>> yearMap = courseList.stream()
                         .collect(Collectors.groupingBy(Course::getCourseSchoolYearTerm));
                 Map<Integer, List<Course>> weekMap = courseList.stream()
@@ -114,8 +116,8 @@ public class CourseTableController {
                         if (statusCode.equals("200")) {
                             classArrayFromSystem.remove(0);//判断为200后,将数组首位的状态码删除
                             courseService.addCourseTable(classArrayFromSystem, studentId);
-                            courseService.addCourseTableToRedis(studentId, courseService.selectCourseTable(studentId, schoolYear));
-                            return getClassTable(studentId, schoolYear, studentPassword);
+//                            courseService.addCourseTableToRedis(studentId, courseService.selectCourseTable(studentId, schoolYear));
+                            return getClassTable(studentId, studentPassword, schoolYear);
                         } else {
                             return classArrayFromSystem.getJSONObject(0);
                         }
