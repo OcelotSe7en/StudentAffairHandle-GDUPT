@@ -25,9 +25,9 @@ public class SystemLoginController {
             //执行登陆
             loginObject = SystemHandler.studentLogin(studentId, studentPassword);
             //判断登陆状态
-            if (loginObject.get("code").equals(true)) {
+            if (loginObject.get("code").equals(200)) {
                 returnObject.put("msg","登陆成功!");
-                returnObject.put("code", true);
+                returnObject.put("code", 200);
 
                 return returnObject;
             }else{

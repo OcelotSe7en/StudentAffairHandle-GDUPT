@@ -14,16 +14,16 @@ public class Course {
     public String courseLocation;
     //星期x(xq)
     @JSONField(alternateNames = "xq")
-    public String courseWeekDay;
+    public int courseWeekDay;
     //课程节次(jcdm)
     @JSONField(alternateNames = "jcdm")
-    public String courseClass;
+    public int courseClass;
     //周次(zc)
     @JSONField(alternateNames = "zc")
-    public String courseWeek;
+    public int courseWeek;
     //学年学期(xnxq)
     @JSONField(alternateNames = "xnxqdm")
-    public String courseSchoolYearTerm;
+    public int courseSchoolYearTerm;
     //学生id
     public long studentId;
 
@@ -51,35 +51,43 @@ public class Course {
         this.courseLocation = courseLocation;
     }
 
-    public String getCourseWeekDay() {
+    public int getCourseWeekDay() {
         return courseWeekDay;
     }
 
-    public void setCourseWeekDay(String courseWeekDay) {
+    public void setCourseWeekDay(int courseWeekDay) {
         this.courseWeekDay = courseWeekDay;
     }
 
-    public String getCourseClass() {
+    public int getCourseClass() {
         return courseClass;
     }
 
-    public void setCourseClass(String courseClass) {
+    public void setCourseClass(int courseClass) {
         this.courseClass = courseClass;
     }
 
-    public String getCourseWeek() {
+    public int getCourseWeek() {
         return courseWeek;
     }
 
-    public void setCourseWeek(String courseWeek) {
+    public void setCourseWeek(int courseWeek) {
         this.courseWeek = courseWeek;
     }
 
-    public String getCourseSchoolYear() {
+    public int getCourseSchoolYearTerm() {
         return courseSchoolYearTerm;
     }
 
-    public void setCourseSchoolYear(String courseSchoolYear) {
-        this.courseSchoolYearTerm = courseSchoolYear;
+    public void setCourseSchoolYearTerm(int courseSchoolYearTerm) {
+        this.courseSchoolYearTerm = courseSchoolYearTerm;
+    }
+
+    public long getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(long studentId) {
+        this.studentId = studentId;
     }
 }

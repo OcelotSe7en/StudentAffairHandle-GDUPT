@@ -16,7 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController//RestController返回JSON, Controller返回页面
 @RequestMapping("/api")
@@ -34,22 +38,67 @@ public class CourseTableController {
         JSONObject responseObject = new JSONObject();
         //学期数组，学期数组包含每周课表数据。
         JSONArray termArray = new JSONArray();
-        //周数组，包含每日课表数据.
-        JSONArray weekArray = new JSONArray();
-        //日数组，包含每节次课表数据。
-        JSONArray dayArray = new JSONArray();
-        JSONArray courseArray;
-        Course course;
+
         //从教务系统获取的课表
         JSONArray classArrayFromSystem;
 
         if (studentId != null &&!studentId.isEmpty() && !studentId.isBlank()) {
             //从数据库/Redis获取课表
             List<Course> courseList = courseService.selectCourseTable(studentId, schoolYear);
+
             /*判断有无课表,有则带状态码返回课表,无则进入系统获取*/
-            if (!courseList.isEmpty()) {//判空
-                courseArray = JSONArray.parseArray(JSON.toJSONString(courseList));
-                responseObject.put("data", courseArray);
+            if (!courseList.isEmpty()) {
+                Map<Integer, List<Course>> yearMap = courseList.stream()
+                        .collect(Collectors.groupingBy(Course::getCourseSchoolYearTerm));
+                Map<Integer, List<Course>> weekMap = courseList.stream()
+                        .collect(Collectors.groupingBy(Course::getCourseWeek));
+                Map<Integer, List<Course>> dayMap = courseList.stream()
+                        .collect(Collectors.groupingBy(Course::getCourseWeekDay));
+
+                Integer[] yearArr = yearMap.keySet().toArray(new Integer[0]);
+                Integer[] weekArr = weekMap.keySet().toArray(new Integer[0]);
+                Integer[] dayArr = dayMap.keySet().toArray(new Integer[0]);
+
+                Arrays.sort(yearArr);
+                Arrays.sort(weekArr);
+                Arrays.sort(dayArr);
+
+                /*按前端要求格式对JSON进行组装*/
+                for (int year : yearArr) {
+                    JSONObject termObject = new JSONObject();
+                    JSONArray weekArray = new JSONArray();
+
+
+                    for (int week : weekArr) {
+                        JSONArray dayArray = new JSONArray();
+                        JSONObject weekObject = new JSONObject();
+
+                        for (int day : dayArr) {
+
+                            JSONObject dayObject = new JSONObject();
+                            List<Course> testList;
+
+                            testList = courseList.stream().filter(
+                                    course -> year == course.courseSchoolYearTerm
+                            ).filter(
+                                    course -> week == course.courseWeek
+                            ).filter(
+                                    course -> day == course.courseWeekDay
+                            ).collect(Collectors.toList());
+                            dayObject.put("day", day);
+                            dayObject.put("data", testList);
+                            dayArray.add(dayObject);
+                        }
+                        weekObject.put("data", dayArray);
+                        weekObject.put("week", week);
+                        weekArray.add(weekObject);
+                    }
+                    termObject.put("term", year);
+                    termObject.put("data", weekArray);
+                    termArray.add(termObject);
+                }
+//                courseArray = JSONArray.parseArray(JSON.toJSONString(courseList));
+                responseObject.put("data", termArray);
                 responseObject.put("code", 200);
             } else {
 //            判断学号密码是否正确输入
@@ -62,8 +111,8 @@ public class CourseTableController {
                         //状态码永远在数组第0位
                         String statusCode = classArrayFromSystem.getJSONObject(0).get("code").toString();
                         //判断课表获取状态
-                        if (statusCode.equals("true")) {
-                            classArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
+                        if (statusCode.equals("200")) {
+                            classArrayFromSystem.remove(0);//判断为200后,将数组首位的状态码删除
                             courseService.addCourseTable(classArrayFromSystem, studentId);
                             courseService.addCourseTableToRedis(studentId, courseService.selectCourseTable(studentId, schoolYear));
                             return getClassTable(studentId, schoolYear, studentPassword);
@@ -107,8 +156,8 @@ public class CourseTableController {
                 //状态码永远在数组第0位
                 String statusCode = classArrayFromSystem.getJSONObject(0).get("code").toString();
                 //判断课表获取状态
-                if (statusCode.equals("true")) {
-                    classArrayFromSystem.remove(0);//判断为true后,将数组首位的状态码删除
+                if (statusCode.equals("200")) {
+                    classArrayFromSystem.remove(0);//判断为200后,将数组首位的状态码删除
                     responseObject = courseService.updateCourseTable(classArrayFromSystem, studentId, schoolYear);
                     return responseObject;
                 } else {

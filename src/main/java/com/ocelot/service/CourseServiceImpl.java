@@ -28,15 +28,15 @@ public class CourseServiceImpl implements CourseService {
      * 从Redis/MySql查询课表
      *
      * @param studentId         学号,不允许为空
-     * @param schoolYearAndTerm 学年学期,允许为空,格式为"年份+学期(01/02)",例如"202101"表示2021-2022学年第一学期
+     * @param courseSchoolYearTerm 学年学期,允许为空,格式为"年份+学期(01/02)",例如"202101"表示2021-2022学年第一学期
      * @return courseList 返回一个List类型的课表
      */
     @Override
-    public List<Course> selectCourseTable(String studentId, String schoolYearAndTerm) throws NullPointerException {
+    public List<Course> selectCourseTable(String studentId, String courseSchoolYearTerm) throws NullPointerException {
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
         List<Course> courseList;
         Map<String, String> selectMap = new HashMap<>();
-        String key = studentId + "_Course";
+        String key = studentId + "_Course_"+courseSchoolYearTerm;
 
         if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
             String classStr = operations.get(key);
@@ -44,7 +44,7 @@ public class CourseServiceImpl implements CourseService {
             return courseList;
         } else {
             selectMap.put("studentId", studentId);
-            selectMap.put("schoolYear", schoolYearAndTerm);
+            selectMap.put("courseSchoolYearTerm", courseSchoolYearTerm);
             courseList = courseMapper.selectCourseTable(selectMap);
             return courseList;
         }
@@ -61,12 +61,12 @@ public class CourseServiceImpl implements CourseService {
         //新增结果计数
         int insertResult = 0;
         String courseName, courseTeacher, courseLocation,
-                courseWeekDay, courseClass, courseWeek, courseSchoolYear;
+                courseWeekDay, courseClass, courseWeek, courseSchoolYearTerm;
         JSONArray redisArray = new JSONArray();
 
         long studentIdLong = Long.parseLong(studentId);
-        String key = studentId + "_Course";
-        ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
+//        String key = studentId + "_Course";
+//        ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
 
         for (int i = 0; i < courseArray.size(); i++) {
             courseName = courseArray.getJSONObject(i).getString("courseName");
@@ -75,7 +75,7 @@ public class CourseServiceImpl implements CourseService {
             courseWeekDay = courseArray.getJSONObject(i).getString("courseWeekDay");
             courseWeek = courseArray.getJSONObject(i).getString("courseWeek");
             courseClass = courseArray.getJSONObject(i).getString("courseClass");
-            courseSchoolYear = courseArray.getJSONObject(i).getString("courseSchoolYear");
+            courseSchoolYearTerm = courseArray.getJSONObject(i).getString("courseSchoolYearTerm");
             Map<Object, Object> insertMap = new HashMap<>();
             insertMap.put("courseName", courseName);
             insertMap.put("courseTeacher", courseTeacher);
@@ -83,7 +83,7 @@ public class CourseServiceImpl implements CourseService {
             insertMap.put("courseWeekDay", courseWeekDay);
             insertMap.put("courseWeek", courseWeek);
             insertMap.put("courseClass", courseClass);
-            insertMap.put("courseSchoolYear", courseSchoolYear);
+            insertMap.put("courseSchoolYearTerm", courseSchoolYearTerm);
             insertMap.put("studentId", studentIdLong);
 
             //将插入的数据存入jsonArray,方便存入redis
@@ -112,7 +112,7 @@ public class CourseServiceImpl implements CourseService {
         JSONArray redisArray = new JSONArray();
         int updateResult = 0;
         String courseName, courseTeacher, courseLocation,
-                courseWeekDay, courseClass, courseWeek, courseSchoolYear;
+                courseWeekDay, courseClass, courseWeek, courseSchoolYearTerm;
         long studentIdLong = Long.parseLong(studentId);
 
         String key = studentId + "_Course";
@@ -126,7 +126,7 @@ public class CourseServiceImpl implements CourseService {
                 courseWeekDay = systemCourseArray.getJSONObject(i).getString("courseWeekDay");
                 courseWeek = systemCourseArray.getJSONObject(i).getString("courseWeek");
                 courseClass = systemCourseArray.getJSONObject(i).getString("courseClass");
-                courseSchoolYear = systemCourseArray.getJSONObject(i).getString("courseSchoolYear");
+                courseSchoolYearTerm = systemCourseArray.getJSONObject(i).getString("courseSchoolYearTerm");
                 Map<Object, Object> updateMap = new HashMap<>();
                 updateMap.put("courseName", courseName);
                 updateMap.put("courseTeacher", courseTeacher);
@@ -134,7 +134,7 @@ public class CourseServiceImpl implements CourseService {
                 updateMap.put("courseWeekDay", courseWeekDay);
                 updateMap.put("courseWeek", courseWeek);
                 updateMap.put("courseClass", courseClass);
-                updateMap.put("courseSchoolYear", courseSchoolYear);
+                updateMap.put("courseSchoolYearTerm", courseSchoolYearTerm);
                 updateMap.put("studentId", studentIdLong);
                 updateResult += courseMapper.updateCourseTable(updateMap);
                 redisArray.add(updateMap);
@@ -182,7 +182,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void addCourseTableToRedis(String studentId ,List<Course> list){
-        String key = studentId + "_Course";
+        int year = list.get(0).getCourseSchoolYearTerm();
+
+        String key = studentId + "_Course_"+year;
         ValueOperations<Object, Object> operations = redisTemplate.opsForValue();
 
         String courseStr = JSON.toJSONString(list);

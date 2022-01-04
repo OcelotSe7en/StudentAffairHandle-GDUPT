@@ -68,10 +68,10 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
             activityId = qeaArray.getJSONObject(i).getLong("activityId");
             activityName = qeaArray.getJSONObject(i).getString("activityName");
             activitySchoolYearTerm = qeaArray.getJSONObject(i).getString("schoolYearTerm");
-            activityTime = qeaArray.getJSONObject(i).getSqlDate("activityTime");
+            activityTime = (Date) qeaArray.getJSONObject(i).getSqlDate("activityTime");
             activityScore = qeaArray.getJSONObject(i).getFloat("activityScore");
             activitySensorStatus = qeaArray.getJSONObject(i).getString("activitySensorStatus");
-            activitySensorTime = qeaArray.getJSONObject(i).getSqlDate("activitySensorTime");
+            activitySensorTime = (Date) qeaArray.getJSONObject(i).getSqlDate("activitySensorTime");
             Map<Object, Object> insertMap = new HashMap<>();
             insertMap.put("activityId", activityId);
             insertMap.put("activityName", activityName);
@@ -87,7 +87,7 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
             insertResult += qualityExpansionActivitiesMapper.addQEActivities(insertMap);
 
         }
-        logger.debug("插入的数据为 [{}]", redisArray);
+//        logger.debug("插入的数据为 [{}]", redisArray);
         String qeaStr = redisArray.toJSONString();//转换成字符串,方便存进redis
         //将素拓活动存进redis
         operations.set(key, qeaStr);
@@ -114,7 +114,7 @@ public class QualityExpansionActivitiesServiceImpl implements QualityExpansionAc
                 activityId = qeaArray.getJSONObject(i).getLong("activityId");
                 activityScore = qeaArray.getJSONObject(i).getFloat("activityScore");
                 activitySensorStatus = qeaArray.getJSONObject(i).getString("activitySensorStatus");
-                activitySensorTime = qeaArray.getJSONObject(i).getSqlDate("activitySensorTime");
+                activitySensorTime = (Date) qeaArray.getJSONObject(i).getSqlDate("activitySensorTime");
                 Map<Object, Object> updateMap = new HashMap<>();
                 updateMap.put("activityId", activityId);
                 updateMap.put("activityScore", activityScore);

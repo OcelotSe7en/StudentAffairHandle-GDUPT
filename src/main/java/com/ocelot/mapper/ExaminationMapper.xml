@@ -31,16 +31,19 @@
     <select id="findExaminationByCondition" resultMap="examinationMap" parameterType="map">
         SELECT
             <include refid="allColumns" />
-        FROM examination e WHERE 1 = 1
-        <if test="studentId != null">
-            AND e.student_id = #{studentId}
-        </if>
-        <if test="examYearAndTerm != null and examYearAndTerm != ''">
-            AND e.exam_year_and_term = #{examYearAndTerm}
-        </if>
-        <if test="examCourseNumber != null">
-            AND e.exam_course_number = #{examCourseNumber}
-        </if>
+        FROM examination e
+        <where>
+            <if test="studentId != null">
+                AND e.student_id = #{studentId}
+            </if>
+            <if test="examYearAndTerm != null and examYearAndTerm != ''">
+                AND e.exam_year_and_term = #{examYearAndTerm}
+            </if>
+            <if test="examCourseNumber != null">
+                AND e.exam_course_number = #{examCourseNumber}
+            </if>
+        </where>
+
     </select>
 
     <!-- 批量新增信息 -->

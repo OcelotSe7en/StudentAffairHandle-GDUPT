@@ -11,7 +11,7 @@ public class QualityExpansionActivity {
     @JSONField(alternateNames = "ktmc")
     String activityName;
     //素拓活动的学年学期时间
-    @JSONField(alternateNames = "xnxqdm")
+    @JSONField(alternateNames = "ktpcmc")
     String activitySchoolYearTerm;
     //素拓活动开展时间
     @JSONField(alternateNames = "kzsj")

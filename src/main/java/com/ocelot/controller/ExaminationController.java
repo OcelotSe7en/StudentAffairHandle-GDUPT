@@ -41,7 +41,6 @@ public class ExaminationController {
         if (studentId != null && !studentId.isEmpty() && !studentId.isBlank()) {
             //从数据库/Redis获取成绩
             List<Examination> examinationList = examinationService.selectExamination(studentId, schoolYear);
-
             /*判断有无成绩,有则带状态码返回成绩,无则进入系统获取*/
             if (!examinationList.isEmpty()) {//判空
                 String courseStr = JSON.toJSONString(examinationList);
@@ -95,7 +94,6 @@ public class ExaminationController {
         JSONArray examinationArrayFromSystem;
 
         if (studentId != null && studentPassword != null && !studentId.isEmpty() && !studentId.isBlank() && !studentPassword.isEmpty() && !studentPassword.isBlank()) {
-
             //执行登陆
             loginObject = SystemHandler.studentLogin(studentId, studentPassword);
             //判断登陆状态
