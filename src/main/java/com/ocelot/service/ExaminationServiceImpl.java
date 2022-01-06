@@ -19,7 +19,7 @@ import java.util.Map;
 
 @Service("ExaminationService")
 public class ExaminationServiceImpl implements ExaminationService {
-    private static final Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExaminationServiceImpl.class);
     @Autowired
     ExaminationMapper examinationMapper;
     @Autowired

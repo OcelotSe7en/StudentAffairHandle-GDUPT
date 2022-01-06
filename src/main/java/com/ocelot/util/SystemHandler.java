@@ -126,26 +126,31 @@ public class SystemHandler {
                 HttpEntity entity = response.getEntity();
                 //将实例转换为字符串
                 String entityStr = EntityUtils.toString(entity, StandardCharsets.UTF_8);
-                //将字符串转换为JSONArray(二维数组)
-                JSONArray originArray = JSON.parseArray(entityStr);
-                //将JSONArray中课程信息部分提取出来,变为一维数组
-                classArray = originArray.getJSONArray(0);
-                statusCode.put("code", 200);
-                returnClassArray.add(0, statusCode);
+                if(entityStr != null && !entityStr.isBlank() && !entityStr.isEmpty()){
+                    //将字符串转换为JSONArray(二维数组)
+                    JSONArray originArray = JSON.parseArray(entityStr);
+                    //将JSONArray中课程信息部分提取出来,变为一维数组
+                    classArray = originArray.getJSONArray(0);
+                    statusCode.put("code", 200);
+                    returnClassArray.add(0, statusCode);
 
-                for (int i = 0; i < classArray.size(); i++) {
-                    course = JSON.parseObject(classArray.getJSONObject(i).toJSONString(), Course.class);
-                    returnClassArray.add(course);
+                    for (int i = 0; i < classArray.size(); i++) {
+                        course = JSON.parseObject(classArray.getJSONObject(i).toJSONString(), Course.class);
+                        returnClassArray.add(course);
+                    }
+                }else{
+                    logger.error("从教务系统获取课表失败! 原因: 参数错误或用户在该学期无课表(如: 18年入学的同学查询17年的课表)");
+                    statusCode.put("msg", "参数错误或用户在该学期无课表");
+                    statusCode.put("code", 403);
+                    returnClassArray.add(0, statusCode);
                 }
-
-                return returnClassArray;
             } else {
                 logger.error("从教务系统获取课表失败! 原因: 未登录,请先登录");
                 statusCode.put("msg", "未登录,请先登录");
                 statusCode.put("code", 403);
                 returnClassArray.add(0, statusCode);
-                return returnClassArray;
             }
+            return returnClassArray;
         } finally {
             httpClient.close();
         }
@@ -164,17 +169,26 @@ public class SystemHandler {
                     .execute(getActivities);
             //获取响应头的实例
             HttpEntity entity = response.getEntity();
+
             //将实例转换为字符串
             String entityStr = EntityUtils.toString(entity, StandardCharsets.UTF_8);
-            //取出返回的JSON对象中装有素拓项目的rows
-            JSONArray activitiesArray = JSON.parseObject(entityStr).getJSONArray("rows");
-            statusCode.put("code", 200);
-            returnArray.add(0, statusCode);
-            for (int i = 0; i < activitiesArray.size(); i++) {
-                activity = JSON.parseObject(activitiesArray.getJSONObject(i).toJSONString(),
-                        QualityExpansionActivity.class);
-                returnArray.add(activity);
+            if(entityStr != null && !entityStr.isBlank() && !entityStr.isEmpty()){
+                //取出返回的JSON对象中装有素拓项目的rows
+                JSONArray activitiesArray = JSON.parseObject(entityStr).getJSONArray("rows");
+                statusCode.put("code", 200);
+                returnArray.add(0, statusCode);
+                for (int i = 0; i < activitiesArray.size(); i++) {
+                    activity = JSON.parseObject(activitiesArray.getJSONObject(i).toJSONString(),
+                            QualityExpansionActivity.class);
+                    returnArray.add(activity);
+                }
+            }else{
+                logger.error("从教务系统获取课表失败! 原因: 参数错误");
+                statusCode.put("msg", "参数错误");
+                statusCode.put("code", 403);
+                returnArray.add(0, statusCode);
             }
+
         } else {
             logger.error("从教务系统获取素拓分失败! 原因: 未登录,请先登录");
             statusCode.put("msg", "未登录,请先登录");
@@ -204,15 +218,23 @@ public class SystemHandler {
             HttpEntity entity = response.getEntity();
             //将实例转换为字符串
             String entityStr = EntityUtils.toString(entity, StandardCharsets.UTF_8);
-            //取出返回的JSON对象中装有成绩信息的rows
-            JSONArray examinationArray = JSON.parseObject(entityStr).getJSONArray("rows");
-            statusCode.put("code", 200);
-            returnArray.add(statusCode);
-            for (int i = 0; i < examinationArray.size(); i++) {
-                examination = JSON.parseObject(examinationArray.getJSONObject(i).toJSONString(),
-                        Examination.class);
-                returnArray.add(examination);
+            if(entityStr != null && !entityStr.isBlank() && !entityStr.isEmpty()){
+                //取出返回的JSON对象中装有成绩信息的rows
+                JSONArray examinationArray = JSON.parseObject(entityStr).getJSONArray("rows");
+                statusCode.put("code", 200);
+                returnArray.add(statusCode);
+                for (int i = 0; i < examinationArray.size(); i++) {
+                    examination = JSON.parseObject(examinationArray.getJSONObject(i).toJSONString(),
+                            Examination.class);
+                    returnArray.add(examination);
+                }
+            }else{
+                logger.error("从教务系统获取课表失败! 原因: 参数错误");
+                statusCode.put("msg", "参数错误");
+                statusCode.put("code", 403);
+                returnArray.add(0, statusCode);
             }
+
         } else {
             logger.error("从教务系统获取成绩失败! 原因: 未登录,请先登录");
             statusCode.put("msg", "未登录,请先登录");

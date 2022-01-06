@@ -25,7 +25,8 @@ public class QEActivityController {
     private static final Logger logger = LoggerFactory.getLogger(SystemHandler.class);
     @Autowired
     QualityExpansionActivitiesService qeaService;
-//    获得素拓列表
+
+    //    获得素拓列表
     @RequestMapping(value = "/qeactivity", method = RequestMethod.POST)
     public JSONObject getQEActivity(String studentId, String studentPassword) throws IOException {
         JSONObject loginObject;//从studentLogin返回的JSON对象
@@ -45,7 +46,7 @@ public class QEActivityController {
                 responseObject.put("code", 200);
                 return responseObject;
             } else {
-                if(studentPassword != null && !studentPassword.isEmpty() && !studentPassword.isBlank()){
+                if (studentPassword != null && !studentPassword.isEmpty() && !studentPassword.isBlank()) {
                     loginObject = SystemHandler.studentLogin(studentId, studentPassword);
                     //判断登陆状态
                     if (loginObject.get("code").equals(200)) {
@@ -61,24 +62,25 @@ public class QEActivityController {
                             return qeaArrayFromSystem.getJSONObject(0);
                         }
                     } else {
-                        logger.info("用户 [{}] 未登录",studentId);
+                        logger.info("用户 [{}] 未登录", studentId);
                         return loginObject;
                     }
-                }else{//执行登陆
-                    responseObject.put("msg","请输入教务系统的账号密码!");
+                } else {
+                    responseObject.put("msg", "请输入教务系统的账号密码!");
                     responseObject.put("code", 403);
                     return responseObject;
                 }
             }
-        }else{
+        } else {
             responseObject.put("msg", "请输入学号!");
             responseObject.put("code", 403);
             return responseObject;
         }
     }
-//    更新素拓列表
+
+    //    更新素拓列表
     @RequestMapping(value = "/qeactivity", method = RequestMethod.PUT)
-    public JSONObject updateQEActivity(String studentId, String studentPassword) throws IOException{
+    public JSONObject updateQEActivity(String studentId, String studentPassword) throws IOException {
         //从studentLogin返回的JSON对象
         JSONObject loginObject;
         //初始化函数返回的JSON对象
@@ -97,21 +99,22 @@ public class QEActivityController {
                 //判断素拓分列表获取状态
                 if (statusCode.equals("200")) {
                     qeaArrayFromSystem.remove(0);//判断为200后,将数组首位的状态码删除
-                    responseObject =  qeaService.updateQualityExpansionActivity(qeaArrayFromSystem, studentId);
+                    responseObject = qeaService.updateQualityExpansionActivity(qeaArrayFromSystem, studentId);
                 } else {
                     responseObject = qeaArrayFromSystem.getJSONObject(0);
                 }
             } else {
-                logger.info("用户 [{}] 未登录",studentId);
+                logger.info("用户 [{}] 未登录", studentId);
                 return loginObject;
             }
-        }else{
+        } else {
             responseObject.put("msg", "请输入教务系统的账号密码!");
             responseObject.put("code", 403);
         }
         return responseObject;
     }
-//    删除素拓活动
+
+    //    删除素拓活动
     @RequestMapping(value = "/qeactivity", method = RequestMethod.DELETE)
     public JSONObject deleteClassTable(@RequestBody JSONArray studentIdArray) {
         JSONObject responseObject = new JSONObject();
