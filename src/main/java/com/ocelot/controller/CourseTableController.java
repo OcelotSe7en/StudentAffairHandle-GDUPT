@@ -116,7 +116,6 @@ public class CourseTableController {
                         if (statusCode.equals("200")) {
                             classArrayFromSystem.remove(0);//判断为200后,将数组首位的状态码删除
                             courseService.addCourseTable(classArrayFromSystem, studentId);
-//                            courseService.addCourseTableToRedis(studentId, courseService.selectCourseTable(studentId, schoolYear));
                             return getClassTable(studentId, studentPassword, schoolYear);
                         } else {
                             return classArrayFromSystem.getJSONObject(0);
@@ -134,6 +133,7 @@ public class CourseTableController {
             responseObject.put("msg", "请输入学号!");
             responseObject.put("code", 403);
         }
+
         return responseObject;
     }
 

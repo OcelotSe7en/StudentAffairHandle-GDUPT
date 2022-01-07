@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class HttpPoolUtil {
 
     public static final String UTF8 = "UTF-8";
-    public static final int maxTotalPool = 150;
+    public static final int maxTotalPool = 500;
     public static final int MAX_TIMEOUT = 8000;
     public static final int RequestTimeout = 5000;
     private static final RequestConfig requestConfig;

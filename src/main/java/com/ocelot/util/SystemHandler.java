@@ -60,8 +60,8 @@ public class SystemHandler {
             loginPost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
 
             //执行POST
-
-            try (CloseableHttpResponse response = httpClient.execute(loginPost)) {
+            CloseableHttpResponse response = httpClient.execute(loginPost);
+            try {
                 //获取响应码
                 int responseCode = response.getStatusLine().getStatusCode();
                 System.out.println(responseCode);
@@ -99,7 +99,10 @@ public class SystemHandler {
                     return jsonResponse;
                 }
             } finally {
-                httpClient.close();
+                cookieResponse.close();
+                response.close();
+//                httpClient.close();
+
             }
         } else {
             loginFlag = 0;
@@ -144,6 +147,7 @@ public class SystemHandler {
                     statusCode.put("code", 403);
                     returnClassArray.add(0, statusCode);
                 }
+                response.close();
             } else {
                 logger.error("从教务系统获取课表失败! 原因: 未登录,请先登录");
                 statusCode.put("msg", "未登录,请先登录");
